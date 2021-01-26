@@ -246,7 +246,12 @@ func (cache *Cache) FetchTwts(conf *Config, archive Archiver, feeds types.Feeds,
 
 			actualurl := res.Request.URL.String()
 			if actualurl != feed.URL {
-				log.WithError(err).Errorf("feed for %s changed from %s to %s", feed.Nick, feed.URL, actualurl)
+				log.WithError(err).Warnf("feed for %s changed from %s to %s", feed.Nick, feed.URL, actualurl)
+				cache.mu.Lock()
+				if cached, ok := cache.Twts[feed.URL]; ok {
+					cache.Twts[actualurl] = cached
+				}
+				cache.mu.Unlock()
 				feed.URL = actualurl
 			}
 
@@ -317,7 +322,9 @@ func (cache *Cache) FetchTwts(conf *Config, archive Archiver, feeds types.Feeds,
 				cache.mu.Unlock()
 			case http.StatusNotModified: // 304
 				cache.mu.RLock()
-				twts = cache.Twts[feed.URL].Twts
+				if _, ok := cache.Twts[feed.URL]; ok {
+					twts = cache.Twts[feed.URL].Twts
+				}
 				cache.mu.RUnlock()
 			}
 
