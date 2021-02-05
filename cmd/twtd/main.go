@@ -80,7 +80,7 @@ var (
 
 func init() {
 	flag.BoolVarP(&debug, "debug", "D", false, "enable debug logging")
-	flag.StringVarP(&parser, internal.DefaultParser, "P", "lextwt", "set active parsing engine")
+	flag.StringVarP(&parser, "parser", "P", internal.DefaultParser, "set active parsing engine")
 	flag.StringVarP(&bind, "bind", "b", "0.0.0.0:8000", "[int]:<port> to bind to")
 	flag.BoolVarP(&version, "version", "v", false, "display version information")
 
