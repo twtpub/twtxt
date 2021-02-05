@@ -12,8 +12,11 @@ const (
 	// startup
 	InvalidConfigValue = "INVALID CONFIG VALUE - PLEASE CHANGE THIS VALUE"
 
-	// DebugMode is the default debug mode
+	// DefaultDebug is the default debug mode
 	DefaultDebug = false
+
+	// DefaultParser is the default Twt parser used by the backend
+	DefaultParser = "lextwt"
 
 	// DefaultData is the default data directory for storage
 	DefaultData = "./data"
@@ -172,7 +175,7 @@ func WithDebug(debug bool) Option {
 	}
 }
 
-// WithFeatureLextwtEnabled sets the debug mode lfag
+// WithParser sets the parser used by the backend
 func WithParser(parser string) Option {
 	return func(cfg *Config) error {
 		cfg.Parser = parser

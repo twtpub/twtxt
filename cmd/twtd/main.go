@@ -80,7 +80,7 @@ var (
 
 func init() {
 	flag.BoolVarP(&debug, "debug", "D", false, "enable debug logging")
-	flag.StringVarP(&parser, "parser", "P", "lextwt", "set active parsing engine")
+	flag.StringVarP(&parser, internal.DefaultParser, "P", "lextwt", "set active parsing engine")
 	flag.StringVarP(&bind, "bind", "b", "0.0.0.0:8000", "[int]:<port> to bind to")
 	flag.BoolVarP(&version, "version", "v", false, "display version information")
 
@@ -241,8 +241,8 @@ func main() {
 	case "retwt":
 		retwt.DefaultTwtManager()
 	default:
-		fmt.Printf("unknown parsing engine: %s", parser)
-		os.Exit(0)
+		log.Errorf("unknown parsing engine: %s", parser)
+		os.Exit(2)
 	}
 
 	svr, err := internal.NewServer(bind,
