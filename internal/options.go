@@ -172,6 +172,14 @@ func WithDebug(debug bool) Option {
 	}
 }
 
+// WithFeatureLextwtEnabled sets the debug mode lfag
+func WithParser(parser string) Option {
+	return func(cfg *Config) error {
+		cfg.Parser = parser
+		return nil
+	}
+}
+
 // WithData sets the data directory to use for storage
 func WithData(data string) Option {
 	return func(cfg *Config) error {
