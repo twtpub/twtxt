@@ -12,6 +12,7 @@
 
 /twt
 /twtd
+/.envrc
 
 /cmd/twt/twt
 /cmd/twtd/twtd

@@ -2,8 +2,6 @@ package internal
 
 import (
 	"fmt"
-	"io/ioutil"
-	"path/filepath"
 
 	"github.com/jointwt/twtxt/types"
 	"github.com/robfig/cron"
@@ -31,22 +29,20 @@ func init() {
 		"UpdateFeeds":       NewJobSpec("@every 5m", NewUpdateFeedsJob),
 		"UpdateFeedSources": NewJobSpec("@every 15m", NewUpdateFeedSourcesJob),
 
-		"FixUserAccounts":   NewJobSpec("@hourly", NewFixUserAccountsJob),
 		"DeleteOldSessions": NewJobSpec("@hourly", NewDeleteOldSessionsJob),
 
-		"FixMissingTwts": NewJobSpec("@daily", NewFixMissingTwtsJob),
-		"Stats":          NewJobSpec("@daily", NewStatsJob),
+		"Stats": NewJobSpec("@daily", NewStatsJob),
 
-		"FixFollowers": NewJobSpec("", NewFixFollowersJob),
+		"CreateBots":       NewJobSpec("", NewCreateBotsJob),
+		"CreateAdminFeeds": NewJobSpec("", NewCreateAdminFeedsJob),
 	}
 
 	StartupJobs = map[string]JobSpec{
 		"UpdateFeeds":       Jobs["UpdateFeeds"],
 		"UpdateFeedSources": Jobs["UpdateFeedSources"],
-		"FixUserAccounts":   Jobs["FixUserAccounts"],
-		"FixMissingTwts":    Jobs["FixMissingTwts"],
+		"CreateBots":        Jobs["CreateBots"],
+		"CreateAdminFeeds":  Jobs["CreateAdminFeeds"],
 		"DeleteOldSessions": Jobs["DeleteOldSessions"],
-		"FixFollowers":      Jobs["FixFollowers"],
 	}
 }
 
@@ -245,7 +241,7 @@ func (job *UpdateFeedSourcesJob) Run() {
 	}
 }
 
-type FixUserAccountsJob struct {
+type CreateAdminFeedsJob struct {
 	conf    *Config
 	blogs   *BlogsCache
 	cache   *Cache
@@ -253,48 +249,39 @@ type FixUserAccountsJob struct {
 	db      Store
 }
 
-func NewFixUserAccountsJob(conf *Config, blogs *BlogsCache, cache *Cache, archive Archiver, db Store) cron.Job {
-	return &FixUserAccountsJob{conf: conf, blogs: blogs, cache: cache, archive: archive, db: db}
+func NewCreateAdminFeedsJob(conf *Config, blogs *BlogsCache, cache *Cache, archive Archiver, db Store) cron.Job {
+	return &CreateAdminFeedsJob{conf: conf, blogs: blogs, cache: cache, archive: archive, db: db}
 }
 
-func (job *FixUserAccountsJob) Run() {
-	// TODO: Refactor this into its own job.
-	fixAdminUser := func() error {
-		log.Infof("fixing adminUser account %s", job.conf.AdminUser)
-		adminUser, err := job.db.GetUser(job.conf.AdminUser)
-		if err != nil {
-			log.WithError(err).Warnf("error loading user object for AdminUser")
-			return err
-		}
+func (job *CreateAdminFeedsJob) Run() {
+	log.Infof("creating feeds for adminUser: %s", job.conf.AdminUser)
 
-		for _, feed := range specialUsernames {
+	if !job.db.HasUser(job.conf.AdminUser) {
+		log.Warn("no adminUser account matching %s", job.conf.AdminUser)
+		return
+	}
+
+	adminUser, err := job.db.GetUser(job.conf.AdminUser)
+	if err != nil {
+		log.WithError(err).Warnf("error loading user object for AdminUser")
+		return
+	}
+
+	for _, feed := range specialUsernames {
+		if !job.db.HasFeed(feed) {
 			if err := CreateFeed(job.conf, job.db, adminUser, feed, true); err != nil {
 				log.WithError(err).Warnf("error creating new feed %s for adminUser", feed)
 			}
 		}
-
-		if err := job.db.SetUser(adminUser.Username, adminUser); err != nil {
-			log.WithError(err).Warn("error saving user object for AdminUser")
-			return err
-		}
-
-		return nil
 	}
 
-	// Fix/Update the adminUser account
-	if err := fixAdminUser(); err != nil {
-		log.WithError(err).Warnf("error fixing adminUser %s", job.conf.AdminUser)
+	if err := job.db.SetUser(adminUser.Username, adminUser); err != nil {
+		log.WithError(err).Warn("error saving user object for AdminUser")
 	}
 
-	// Create twtxtBots feeds
-	for _, feed := range twtxtBots {
-		if err := CreateFeed(job.conf, job.db, nil, feed, true); err != nil {
-			log.WithError(err).Warnf("error creating new feed %s", feed)
-		}
-	}
 }
 
-type FixMissingTwtsJob struct {
+type CreateBotsJob struct {
 	conf    *Config
 	blogs   *BlogsCache
 	cache   *Cache
@@ -302,31 +289,18 @@ type FixMissingTwtsJob struct {
 	db      Store
 }
 
-func NewFixMissingTwtsJob(conf *Config, blogs *BlogsCache, cache *Cache, archive Archiver, db Store) cron.Job {
-	return &FixMissingTwtsJob{conf: conf, blogs: blogs, cache: cache, archive: archive, db: db}
+func NewCreateBotsJob(conf *Config, blogs *BlogsCache, cache *Cache, archive Archiver, db Store) cron.Job {
+	return &CreateBotsJob{conf: conf, blogs: blogs, cache: cache, archive: archive, db: db}
 }
 
-func (job *FixMissingTwtsJob) Run() {
-	p := filepath.Join(job.conf.Data, feedsDir)
-	fileInfos, err := ioutil.ReadDir(p)
-	if err != nil {
-		log.WithError(err).Error("error reading feeds")
-		return
-	}
+func (job *CreateBotsJob) Run() {
+	log.Infof("creating bots ...")
 
-	for _, fileInfo := range fileInfos {
-		name := fileInfo.Name()
-		twts, err := GetAllTwts(job.conf, name)
-		if err != nil {
-			log.WithError(err).Errorf("error loading twts for %s", name)
-			continue
-		}
-
-		for _, twt := range twts {
-			_, ok := job.cache.Lookup(twt.Hash())
-			if !ok && !job.archive.Has(twt.Hash()) {
-				log.Infof("inserting missing Twt %s into archive", twt.Hash())
-				_ = job.archive.Archive(twt)
+	// Create twtxtBots feeds
+	for _, feed := range twtxtBots {
+		if !job.db.HasFeed(feed) {
+			if err := CreateFeed(job.conf, job.db, nil, feed, true); err != nil {
+				log.WithError(err).Warnf("error creating new feed %s", feed)
 			}
 		}
 	}
@@ -360,61 +334,5 @@ func (job *DeleteOldSessionsJob) Run() {
 				log.WithError(err).Error("error deleting session object")
 			}
 		}
-	}
-}
-
-type FixFollowersJob struct {
-	conf    *Config
-	blogs   *BlogsCache
-	cache   *Cache
-	archive Archiver
-	db      Store
-}
-
-func NewFixFollowersJob(conf *Config, blogs *BlogsCache, cache *Cache, archive Archiver, db Store) cron.Job {
-	return &FixFollowersJob{conf: conf, blogs: blogs, cache: cache, archive: archive, db: db}
-}
-
-func (job *FixFollowersJob) Run() {
-	log.Infof("fixing followers")
-
-	feeds, err := job.db.GetAllFeeds()
-	if err != nil {
-		log.WithError(err).Warn("unable to get all feeds from database")
-		return
-	}
-
-	users, err := job.db.GetAllUsers()
-	if err != nil {
-		log.WithError(err).Warn("unable to get all users from database")
-		return
-	}
-
-	for _, followee := range feeds {
-		for _, follower := range users {
-			if follower.Follows(followee.URL) && !followee.FollowedBy(follower.URL) {
-				log.Infof("%s follows feed %s but not listed in .Followers", follower.Username, followee.Name)
-				followee.Followers[follower.Username] = follower.URL
-			}
-		}
-		if err := job.db.SetFeed(followee.Name, followee); err != nil {
-			log.WithError(err).Error("error updating followee")
-		}
-	}
-
-	for _, followee := range users {
-		for _, follower := range users {
-			if follower.Follows(followee.URL) && !followee.FollowedBy(follower.URL) {
-				log.Infof("%s follows user %s but not listed in .Followers", follower.Username, followee.Username)
-				followee.Followers[follower.Username] = follower.URL
-			}
-		}
-		if err := job.db.SetUser(followee.Username, followee); err != nil {
-			log.WithError(err).Error("error updating followee")
-		}
-	}
-
-	if err := job.db.Sync(); err != nil {
-		log.WithError(err).Error("error syncing store")
 	}
 }
