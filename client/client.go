@@ -18,6 +18,9 @@ var (
 	// DefaultUserAgent ...
 	DefaultUserAgent = fmt.Sprintf("twt/%s", twtxt.FullVersion())
 
+	// ErrBadRequest ...
+	ErrBadRequest = errors.New("error: bad request")
+
 	// ErrUnauthorized ...
 	ErrUnauthorized = errors.New("error: authorization failed")
 
@@ -96,6 +99,8 @@ func (c *Client) do(req *http.Request, v interface{}) error {
 	switch res.StatusCode {
 	case http.StatusUnauthorized:
 		return ErrUnauthorized
+	case http.StatusBadRequest:
+		return ErrBadRequest
 	case http.StatusInternalServerError:
 		return ErrServerError
 	}

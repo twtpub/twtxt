@@ -1,6 +1,9 @@
 package client
 
-import "os"
+import (
+	"os"
+	"strings"
+)
 
 const (
 	// DefaultURI is the default base URI to use for the Twtxt API endpoint
@@ -21,6 +24,9 @@ type Option func(*Config) error
 // WithURI sets the base URI to used for the Twtxt API endpoint
 func WithURI(uri string) Option {
 	return func(cfg *Config) error {
+		if !strings.HasSuffix(uri, "/") {
+			uri += "/"
+		}
 		cfg.URI = uri
 		return nil
 	}
