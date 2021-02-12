@@ -1,8 +1,8 @@
 package internal
 
 import (
+	"bufio"
 	"fmt"
-	"io"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -167,11 +167,25 @@ func (s *Server) TwtxtHandler() httprouter.Handle {
 		}
 
 		buf := &strings.Builder{}
+		scan := bufio.NewScanner(f)
+		for scan.Scan() {
+			if !strings.HasPrefix(scan.Text(), "#") {
+				break
+			}
+			buf.WriteString(scan.Text())
+			buf.WriteRune('\n')
+		}
+
 		if _, err = buf.WriteString(preamble); err != nil {
 			log.WithError(err).Warn("error writing twtxt preamble")
 		}
-		if _, err = io.Copy(buf, f); err != nil {
-			log.WithError(err).Warn("error writing twtxt body")
+
+		buf.WriteString(scan.Text())
+		buf.WriteRune('\n')
+
+		for scan.Scan() {
+			buf.WriteString(scan.Text())
+			buf.WriteRune('\n')
 		}
 		http.ServeContent(w, r, filepath.Base(fn), fileInfo.ModTime(), strings.NewReader(buf.String()))
 	}
