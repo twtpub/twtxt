@@ -2,6 +2,7 @@ package internal
 
 import (
 	"fmt"
+	"io"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -165,9 +166,13 @@ func (s *Server) TwtxtHandler() httprouter.Handle {
 			return
 		}
 
-		if _, err = w.Write([]byte(preamble)); err != nil {
+		buf := &strings.Builder{}
+		if _, err = buf.WriteString(preamble); err != nil {
 			log.WithError(err).Warn("error writing twtxt preamble")
 		}
-		http.ServeContent(w, r, filepath.Base(fn), fileInfo.ModTime(), f)
+		if _, err = io.Copy(buf, f); err != nil {
+			log.WithError(err).Warn("error writing twtxt body")
+		}
+		http.ServeContent(w, r, filepath.Base(fn), fileInfo.ModTime(), strings.NewReader(buf.String()))
 	}
 }
