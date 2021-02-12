@@ -80,6 +80,7 @@
             Feeds
           </a>
         </li>
+        <li><a id="togglePostFormBtn" href="#" style="display: none"><i class="icss-plus"></i>&nbsp;Post</a></li>
       {{ end }}
     </ul>
     <ul>
@@ -156,9 +157,6 @@
       <a href="/atom.xml" target="_blank">Atom&nbsp;<i class="icss-rss"></i></a>
     </div>
   </footer>
-  {{ if .Authenticated }}
-    <script>document.write("<button id=\"newPostBtn\" class=\"new-post\" aria-label=\"New post\"></button>");</script>
-  {{ end }}
   {{ if $.Debug }}
     <script type="application/javascript" src="/js/01-umbrella.js"></script>
     <script type="application/javascript" src="/js/02-polyfill.js"></script>
