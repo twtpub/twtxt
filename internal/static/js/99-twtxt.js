@@ -738,10 +738,10 @@ u("#register #agree").on("change", function(e) {
   }
 });
 
-u("#newPostBtn").on("click", function(e) {
+u("#togglePostFormBtn").on("click", function(e) {
   e.preventDefault();
 
-  u("postform").attr("style", "");
+  u("postform").toggleClass("hidden");
 
   var el = u("textarea#text");
   var text = document.getElementById("text");
