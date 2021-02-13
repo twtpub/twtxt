@@ -2,17 +2,20 @@ package internal
 
 import (
 	"fmt"
+	"io"
+	"io/ioutil"
 	"net/http"
 	"os"
 	"path/filepath"
 	"strings"
 
 	securejoin "github.com/cyphar/filepath-securejoin"
+	"github.com/jointwt/twtxt/types"
 	"github.com/julienschmidt/httprouter"
 	log "github.com/sirupsen/logrus"
 )
 
-const twtxtTemplate = `# Twtxt is an open, distributed microblogging platform that
+const defaultPreambleTemplate = `# Twtxt is an open, distributed microblogging platform that
 # uses human-readable text files, common transport protocols,
 # and free software.
 #
@@ -143,11 +146,6 @@ func (s *Server) TwtxtHandler() httprouter.Handle {
 			log.WithError(err).Warnf("unable to load user or feed profile for %s", nick)
 		}
 
-		preamble, err := RenderString(twtxtTemplate, ctx)
-		if err != nil {
-			log.WithError(err).Warn("error rendering twtxt preamble")
-		}
-
 		f, err := os.Open(fn)
 		if err != nil {
 			log.WithError(err).Error("error opening feed")
@@ -155,6 +153,36 @@ func (s *Server) TwtxtHandler() httprouter.Handle {
 			return
 		}
 		defer f.Close()
+
+		pr, err := types.ReadPreambleFeed(f)
+		if err != nil {
+			log.WithError(err).Error("error reading feed")
+			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+			return
+		}
+
+		preampleTemplate := pr.Preamble()
+
+		if preampleTemplate == "" {
+			preampleCustomTemplateFn := filepath.Join(s.config.Data, feedsDir, fmt.Sprintf("%s.tpl", nick))
+			if FileExists(preampleCustomTemplateFn) {
+				if data, err := ioutil.ReadFile(preampleCustomTemplateFn); err == nil {
+					preampleTemplate = string(data)
+				} else {
+					log.WithError(err).Warnf("error loading custom preamble template for %s", nick)
+					preampleTemplate = defaultPreambleTemplate
+				}
+			}
+		}
+
+		if preampleTemplate == "" {
+			preampleTemplate = defaultPreambleTemplate
+		}
+
+		preamble, err := RenderPlainText(preampleTemplate, ctx)
+		if err != nil {
+			log.WithError(err).Warn("error rendering twtxt preamble")
+		}
 
 		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 		w.Header().Set("Content-Length", fmt.Sprintf("%d", int64(len(preamble))+fileInfo.Size()))
@@ -168,6 +196,6 @@ func (s *Server) TwtxtHandler() httprouter.Handle {
 		if _, err = w.Write([]byte(preamble)); err != nil {
 			log.WithError(err).Warn("error writing twtxt preamble")
 		}
-		http.ServeContent(w, r, filepath.Base(fn), fileInfo.ModTime(), f)
+		_, _ = io.Copy(w, pr)
 	}
 }

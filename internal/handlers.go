@@ -72,7 +72,7 @@ func (s *Server) PageHandler(name string) httprouter.Handle {
 	return func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		ctx := NewContext(s.config, s.db, r)
 
-		md, err := RenderString(mdTpl, ctx)
+		md, err := RenderHTML(mdTpl, ctx)
 		if err != nil {
 			log.WithError(err).Errorf("error rendering page %s", name)
 			ctx.Error = true
@@ -639,7 +639,7 @@ func (s *Server) PostHandler() httprouter.Handle {
 		switch postas {
 		case "", user.Username:
 			if hash != "" && lastTwt.Hash() == hash {
-				twt, err = AppendTwt(s.config, s.db, user, text, lastTwt.Created)
+				twt, err = AppendTwt(s.config, s.db, user, text, lastTwt.Created())
 			} else {
 				twt, err = AppendTwt(s.config, s.db, user, text)
 			}
@@ -679,7 +679,7 @@ func (s *Server) PostHandler() httprouter.Handle {
 			}
 		}
 
-		http.Redirect(w, r, "/", http.StatusFound)
+		http.Redirect(w, r, RedirectRefererURL(r, s.config, "/"), http.StatusFound)
 	}
 }
 
