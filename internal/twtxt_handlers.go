@@ -161,6 +161,9 @@ func (s *Server) TwtxtHandler() httprouter.Handle {
 			preampleTemplate = pr.Preamble()
 		} else {
 			log.WithError(err).Warn("error reading feed preamble")
+			if _, err := f.Seek(0, io.SeekStart); err != nil {
+				log.WithError(err).Warn("error seeking feed")
+			}
 		}
 
 		if preampleTemplate == "" {
