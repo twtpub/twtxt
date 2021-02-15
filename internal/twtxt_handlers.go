@@ -154,14 +154,14 @@ func (s *Server) TwtxtHandler() httprouter.Handle {
 		}
 		defer f.Close()
 
-		pr, err := types.ReadPreambleFeed(f)
-		if err != nil {
-			log.WithError(err).Error("error reading feed")
-			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-			return
-		}
+		var preampleTemplate string
 
-		preampleTemplate := pr.Preamble()
+		pr, err := types.ReadPreambleFeed(f)
+		if err == nil {
+			preampleTemplate = pr.Preamble()
+		} else {
+			log.WithError(err).Warn("error reading feed preamble")
+		}
 
 		if preampleTemplate == "" {
 			preampleCustomTemplateFn := filepath.Join(s.config.Data, feedsDir, fmt.Sprintf("%s.tpl", nick))
