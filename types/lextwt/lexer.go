@@ -444,7 +444,7 @@ func (l *lexer) loadIdentifier() bool {
 	}
 
 	l.Token = TokSTRING
-	for unicode.IsLetter(l.rune) || unicode.IsNumber(l.rune) {
+	for l.rune == '_' || l.rune == '-' || unicode.IsLetter(l.rune) || unicode.IsNumber(l.rune) {
 		l.Literal = append(l.Literal, l.rune)
 		l.readRune()
 	}

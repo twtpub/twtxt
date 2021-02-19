@@ -661,6 +661,15 @@ func TestParseTwt(t *testing.T) {
 				lextwt.NewText("\texample"),
 			),
 		},
+
+		{
+			lit: `2021-02-18T00:44:45Z	(_just kidding!_)`,
+			twt: lextwt.NewTwt(
+				twter,
+				lextwt.NewDateTime(parseTime("2021-02-18T00:44:45Z"), "2021-02-18T00:44:45Z"),
+				lextwt.NewSubject("_just kidding!_"),
+			),
+		},
 	}
 	fmtOpts := mockFmtOpts{"http://example.org"}
 	for i, tt := range tests {
@@ -710,7 +719,7 @@ func testParseTwt(t *testing.T, expect, elem types.Twt) {
 
 	is.Equal(expect.Twter(), elem.Twter())
 	is.Equal(fmt.Sprintf("%+l", expect), fmt.Sprintf("%+l", elem))
- 
+
 	{
 		m := elem.Subject()
 		n := expect.Subject()
