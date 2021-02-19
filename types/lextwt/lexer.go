@@ -439,7 +439,7 @@ func (l *lexer) loadIdentifier() bool {
 		return false
 	}
 
-	if !(unicode.IsLetter(l.rune) || unicode.IsNumber(l.rune)) {
+	if !(l.rune == '_' || l.rune == '-' || unicode.IsLetter(l.rune) || unicode.IsNumber(l.rune)) {
 		return false
 	}
 

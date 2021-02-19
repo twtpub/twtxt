@@ -468,12 +468,14 @@ func testParseLink(t *testing.T, expect, elem *lextwt.Link) {
 }
 
 type twtTestCase struct {
-	lit     string
-	text    string
-	md      string
-	html    string
-	twt     types.Twt
-	subject string
+	lit       string
+	text      string
+	md        string
+	html      string
+	twt       types.Twt
+	subject   string
+	twter     *types.Twter
+	skipRetwt bool
 }
 
 func TestParseTwt(t *testing.T) {
@@ -647,6 +649,18 @@ func TestParseTwt(t *testing.T) {
 				lextwt.NewText(" subject"),
 			),
 		},
+
+		{
+			lit: `2021-02-04T12:54:21Z	@<other http://example.com/other.txt>	example`,
+			twter:     &types.Twter{Nick: "other", URL: "http://example.com/other.txt"},
+			skipRetwt: true,
+			twt: lextwt.NewTwt(
+				types.Twter{Nick: "other", URL: "http://example.com/other.txt"},
+				lextwt.NewDateTime(parseTime("2021-02-04T12:54:21Z"), "2021-02-04T12:54:21Z"),
+				lextwt.NewMention("other", "http://example.com/other.txt"),
+				lextwt.NewText("\texample"),
+			),
+		},
 	}
 	fmtOpts := mockFmtOpts{"http://example.org"}
 	for i, tt := range tests {
@@ -658,12 +672,14 @@ func TestParseTwt(t *testing.T) {
 		parser.SetTwter(&twter)
 		twt := parser.ParseTwt()
 
-		rt, err := retwt.ParseLine(strings.TrimRight(tt.lit, "\n"), twter)
-		is.NoErr(err)
-		is.True(rt != nil)
+		if !tt.skipRetwt {
+			rt, err := retwt.ParseLine(strings.TrimRight(tt.lit, "\n"), twter)
+			is.NoErr(err)
+			is.True(rt != nil)
 
-		if twt != nil && rt != nil {
-			is.Equal(twt.Hash(), rt.Hash())
+			if twt != nil && rt != nil {
+				is.Equal(twt.Hash(), rt.Hash())
+			}
 		}
 
 		is.True(twt != nil)
@@ -682,6 +698,10 @@ func TestParseTwt(t *testing.T) {
 		if tt.subject != "" {
 			is.Equal(fmt.Sprintf("%c", twt.Subject()), tt.subject)
 		}
+		if tt.twter != nil {
+			is.Equal(twt.Twter().Nick, tt.twter.Nick)
+			is.Equal(twt.Twter().URL, tt.twter.URL)
+		}
 	}
 }
 
@@ -690,7 +710,7 @@ func testParseTwt(t *testing.T, expect, elem types.Twt) {
 
 	is.Equal(expect.Twter(), elem.Twter())
 	is.Equal(fmt.Sprintf("%+l", expect), fmt.Sprintf("%+l", elem))
-
+ 
 	{
 		m := elem.Subject()
 		n := expect.Subject()

@@ -592,6 +592,7 @@ type Twt struct {
 	twter      *types.Twter
 	pos        int
 	hasSubject bool
+	isProxy    bool
 }
 
 var _ Line = (*Twt)(nil)
@@ -636,6 +637,7 @@ func (twt *Twt) append(elem Elem) {
 
 	twt.msg = append(twt.msg, elem)
 
+	// Look for subject if not found and msg's before are only space or mention.
 	if !twt.hasSubject {
 		switch elem := elem.(type) {
 		case *Subject:
@@ -668,6 +670,16 @@ func (twt *Twt) append(elem Elem) {
 
 	if link, ok := elem.(*Link); ok {
 		twt.links = append(twt.links, link)
+	}
+
+	// If the first two  elements are mention and tab move it into twter.
+	if text, ok := elem.(*Text); ok && strings.HasPrefix(text.lit, "\t") && len(twt.msg) == 2 {
+		if m, ok := twt.msg[0].(*Mention); ok {
+			text.lit = text.lit[1:]
+			twt.msg = twt.msg[1:]
+			twt.twter = &types.Twter{Nick: m.Name(), URL: m.Target()}
+			twt.isProxy = true
+		}
 	}
 }
 func (twt *Twt) IsNil() bool   { return twt == nil }
@@ -801,8 +813,12 @@ func DecodeJSON(data []byte) (types.Twt, error) {
 	return twt, nil
 }
 func (twt Twt) Format(state fmt.State, c rune) {
-	if state.Flag('+') {
+	if state.Flag('+') || state.Flag('#') {
 		fmt.Fprint(state, twt.dt.Literal())
+		state.Write([]byte("\t"))
+	}
+	if state.Flag('#') || twt.isProxy {
+		fmt.Fprint(state, NewMention(twt.twter.Nick, twt.twter.URL))
 		state.Write([]byte("\t"))
 	}
 
