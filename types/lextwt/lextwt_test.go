@@ -468,11 +468,12 @@ func testParseLink(t *testing.T, expect, elem *lextwt.Link) {
 }
 
 type twtTestCase struct {
-	lit  string
-	text string
-	md   string
-	html string
-	twt  types.Twt
+	lit     string
+	text    string
+	md      string
+	html    string
+	twt     types.Twt
+	subject string
 }
 
 func TestParseTwt(t *testing.T) {
@@ -510,6 +511,7 @@ func TestParseTwt(t *testing.T) {
 		},
 		{
 			lit: "2020-12-25T16:57:57Z	@<hirad https://twtxt.net/user/hirad/twtxt.txt> (#<hrqg53a https://twtxt.net/search?tag=hrqg53a>) @<prologic https://twtxt.net/user/prologic/twtxt.txt> make this a blog post plz  And I forgot, [Try It Online Again!](https://tio.run/#jVVbb5tIFH7nV5zgB8DGYJxU7br2Q1IpVausFWXbhxUhCMO4RgszdGbIRZv97d4zYAy2Y7fIRnP5znfuh@JFrhgdr9c9WElZiInrFhGPsxcZPZPMkWW@yLgTs9wtmJDuh/ejD@/eexfn3h9uSiXhBSf4Hi4ZH3rDlA6Lik/TemduKbi7SKlL6CNsjnvgDaAjh2u4ba5uK73wTSkGF74STnK1pTaMR94FIm7SmNCYQCrg0ye4@nv41yVcOCMEX1/egOec4@rz/Dt8vr15PNfSvGBcgngR2pKzHGKWZSSWKaMCNncJ@VkSTRM2iARm9da0bPj3P01LyBIYJUVWClMgdgZz3FoTDfBJl0AZcnNZ7zdnGaEm6nMi/uPRgrMZjNtr9RQcnQf9u4h@kAnoMIAG7Y8C3OngL9OMgGSwIECeSVxKkgT6DokSIc@pND2r1U0LNJAVHf2@F9hgcKMF8)",
+			subject: "(#hrqg53a)",
 			twt: lextwt.NewTwt(
 				twter,
 				lextwt.NewDateTime(parseTime("2020-12-25T16:57:57Z"), "2020-12-25T16:57:57Z"),
@@ -528,6 +530,7 @@ func TestParseTwt(t *testing.T) {
 
 		{
 			lit: "2020-12-04T21:43:43Z	@<prologic https://twtxt.net/user/prologic/twtxt.txt> (#<63dtg5a https://txt.sour.is/search?tag=63dtg5a>) Web Key Directory: a way to self host your public key. instead of using a central system like pgp.mit.net or OpenPGP.org you have your key on a server you own.   it takes an email@address.com hashes the part before the @ and turns it into `[openpgpkey.]address.com/.well-known/openpgpkey[/address.com]/<hash>`",
+			subject: "(#63dtg5a)",
 			twt: lextwt.NewTwt(
 				twter,
 				lextwt.NewDateTime(parseTime("2020-12-04T21:43:43Z"), "2020-12-04T21:43:43Z"),
@@ -583,6 +586,7 @@ func TestParseTwt(t *testing.T) {
 
 		{
 			lit: `2021-01-24T02:19:54Z	(#ezmdswq) @<lyse https://lyse.isobeef.org/twtxt.txt> (#ezmdswq) Looks good for me!  ![](https://txt.sour.is/media/353DzAXLDCv43GofSMw6SL)`,
+			subject: "(#ezmdswq)",
 			twt: lextwt.NewTwt(
 				twter,
 				lextwt.NewDateTime(parseTime("2021-01-24T02:19:54Z"), "2021-01-24T02:19:54Z"),
@@ -631,6 +635,18 @@ func TestParseTwt(t *testing.T) {
 				lextwt.NewText("."),
 			),
 		},
+
+		{
+			lit: `2021-02-04T12:54:21Z	a twt witn (not a) subject`,
+			subject: "(#czirbha)",
+			twt: lextwt.NewTwt(
+				twter,
+				lextwt.NewDateTime(parseTime("2021-02-04T12:54:21Z"), "2021-02-04T12:54:21Z"),
+				lextwt.NewText("a twt witn "),
+				lextwt.NewSubject("not a"),
+				lextwt.NewText(" subject"),
+			),
+		},
 	}
 	fmtOpts := mockFmtOpts{"http://example.org"}
 	for i, tt := range tests {
@@ -662,6 +678,9 @@ func TestParseTwt(t *testing.T) {
 		}
 		if tt.html != "" {
 			is.Equal(twt.FormatText(types.HTMLFmt, fmtOpts), tt.html)
+		}
+		if tt.subject != "" {
+			is.Equal(fmt.Sprintf("%c", twt.Subject()), tt.subject)
 		}
 	}
 }

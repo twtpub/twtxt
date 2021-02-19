@@ -464,6 +464,9 @@ func (n *Text) String() string  { return n.lit }
 func (n *Text) Format(state fmt.State, r rune) {
 	_, _ = state.Write([]byte(n.lit))
 }
+func (n *Text) IsSpace() bool {
+	return strings.TrimSpace(n.lit) == ""
+}
 
 type lineSeparator struct{}
 
@@ -579,22 +582,27 @@ func (n *Code) String() string {
 }
 
 type Twt struct {
-	dt       *DateTime
-	msg      []Elem
-	mentions []*Mention
-	tags     []*Tag
-	links    []*Link
-	hash     string
-	subject  *Subject
-	twter    *types.Twter
-	pos      int
+	dt         *DateTime
+	msg        []Elem
+	mentions   []*Mention
+	tags       []*Tag
+	links      []*Link
+	hash       string
+	subject    *Subject
+	twter      *types.Twter
+	pos        int
+	hasSubject bool
 }
 
 var _ Line = (*Twt)(nil)
 var _ types.Twt = (*Twt)(nil)
 
 func NewTwt(twter types.Twter, dt *DateTime, elems ...Elem) *Twt {
-	twt := &Twt{twter: &twter, dt: dt, msg: make([]Elem, 0, len(elems))}
+	twt := &Twt{
+		twter:      &twter,
+		dt:         dt,
+		msg:        make([]Elem, 0, len(elems)),
+	}
 
 	for _, elem := range elems {
 		twt.append(elem)
@@ -628,10 +636,23 @@ func (twt *Twt) append(elem Elem) {
 
 	twt.msg = append(twt.msg, elem)
 
-	if subject, ok := elem.(*Subject); ok {
-		if twt.subject == nil {
-			twt.subject = subject
+	if !twt.hasSubject {
+		switch elem := elem.(type) {
+		case *Subject:
+			twt.subject = elem
+			twt.hasSubject = true
+
+		case *Mention:
+		case *Text:
+			if !elem.IsSpace() {
+				twt.hasSubject = true
+			}
+		default:
+			twt.hasSubject = true
 		}
+	}
+
+	if subject, ok := elem.(*Subject); ok {
 		if subject.tag != nil {
 			twt.tags = append(twt.tags, subject.tag)
 		}
