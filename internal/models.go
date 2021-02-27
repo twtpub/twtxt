@@ -502,7 +502,7 @@ func (u *User) Profile(baseURL string, viewer *User) types.Profile {
 
 		Username:  u.Username,
 		Tagline:   u.Tagline,
-		URL:       URLForUser(baseURL, u.URL),
+		URL:       URLForUser(baseURL, u.Username),
 		BlogsURL:  URLForBlogs(baseURL, u.Username),
 		AvatarURL: URLForAvatar(baseURL, u.Username),
 
