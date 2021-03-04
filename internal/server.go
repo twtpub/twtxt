@@ -2,8 +2,10 @@ package internal
 
 import (
 	"context"
+	"embed"
 	"errors"
 	"fmt"
+	"io/fs"
 	"net/http"
 	"net/url"
 	"os"
@@ -13,7 +15,6 @@ import (
 	"syscall"
 	"time"
 
-	rice "github.com/GeertJohan/go.rice"
 	"github.com/NYTimes/gziphandler"
 	"github.com/andyleap/microformats"
 	humanize "github.com/dustin/go-humanize"
@@ -34,6 +35,15 @@ import (
 var (
 	metrics     *observe.Metrics
 	webmentions *webmention.WebMention
+
+	//go:embed static/css
+	staticCSS embed.FS
+
+	//go:embed static/js
+	staticJS embed.FS
+
+	//go:embed static/img
+	staticIMG embed.FS
 )
 
 func init() {
@@ -453,12 +463,24 @@ func (s *Server) initRoutes() {
 		s.router.ServeFiles("/img/*filepath", http.Dir("./internal/static/img"))
 		s.router.ServeFiles("/js/*filepath", http.Dir("./internal/static/js"))
 	} else {
-		cssBox := rice.MustFindBox("static/css").HTTPBox()
-		imgBox := rice.MustFindBox("static/img").HTTPBox()
-		jsBox := rice.MustFindBox("static/js").HTTPBox()
-		s.router.ServeFilesWithCacheControl("/css/:commit/*filepath", cssBox)
-		s.router.ServeFilesWithCacheControl("/img/:commit/*filepath", imgBox)
-		s.router.ServeFilesWithCacheControl("/js/:commit/*filepath", jsBox)
+		cssFS, err := fs.Sub(staticCSS, "static/css")
+		if err != nil {
+			log.Fatal("error getting SubFS for static/css")
+		}
+
+		jsFS, err := fs.Sub(staticJS, "static/js")
+		if err != nil {
+			log.Fatal("error getting SubFS for static/js")
+		}
+
+		imgFS, err := fs.Sub(staticIMG, "static/img")
+		if err != nil {
+			log.Fatal("error getting SubFS for static/img")
+		}
+
+		s.router.ServeFilesWithCacheControl("/css/:commit/*filepath", cssFS)
+		s.router.ServeFilesWithCacheControl("/img/:commit/*filepath", imgFS)
+		s.router.ServeFilesWithCacheControl("/js/:commit/*filepath", jsFS)
 	}
 
 	s.router.NotFound = http.HandlerFunc(s.NotFoundHandler)
