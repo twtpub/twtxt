@@ -15,10 +15,9 @@ the same on GitHub and I'll answer as honest and quickly as possible :)
 <details>
   <summary>What identifiable information is stored about me?</summary>
   <p>
-    Your username/nickname and your email address is stored along with
-    your user information, and of course. You won't even get any
-    marketing emails, feature updates, newsletters, notification emails,
-    nothing.
+    Your username/nickname along with your user information such as optional Avatar and Tagline.
+    Your email address is used for password recovery only and is <b>NOT</b> stored, only a hash of it
+    is stored and used for comparision when you user the password recovery featyre.
   </p>
 </details>
 
