@@ -48,6 +48,7 @@ func NewTemplateManager(conf *Config, blogs *BlogsCache, cache *Cache, archive A
 	funcMap["formatTwtText"] = func() func(text string) template.HTML {
 		fn := FormatTwtFactory(conf)
 		return func(text string) template.HTML {
+			log.Debugf("text: %q", text)
 			twt := types.MakeTwt(types.Twter{}, time.Time{}, text)
 			return fn(twt)
 		}
