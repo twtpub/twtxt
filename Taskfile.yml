@@ -1,3 +1,4 @@
+---
 # https://taskfile.dev
 
 version: '3'
@@ -5,8 +6,8 @@ version: '3'
 output: 'prefixed'
 
 vars:
-  TwtdSvc: twtd 
-  TwtdExe: twtd{{exeExt}} 
+  TwtdSvc: twtd
+  TwtdExe: twtd{{exeExt}}
 
 tasks:
   default:
@@ -17,19 +18,19 @@ tasks:
   twtd:
     desc: run twtd service
     cmds:
-      - task: run-twtd 
+      - task: run-twtd
 
 
   build-twtd:
     desc: build twtd service
-    deps: [twtd-css,twtd-js,tr-merge]
+    deps: [twtd-css, twtd-js, tr-merge]
     cmds:
       - echo "{{.TwtdExe}} building..."
       - go build -v -o {{.TwtdExe}} -ldflags "-w -X {{.Module}}.Version={{.Version}} -X {{.Module}}.Commit={{.Commit}}" cmd/{{.TwtdSvc}}/main.go
       - echo "{{.TwtdExe}} built."
     generates:
       - '{{.TwtdExe}}'
-    sources: 
+    sources:
       - '**/*.go'
     method: none
     vars:
@@ -43,14 +44,14 @@ tasks:
 
   run-twtd:
     cmds:
-      -  ./twtd --cookie-secret abc --magiclink-secret abc --api-signing-key abc -R --debug
+      - ./twtd --cookie-secret abc --magiclink-secret abc --api-signing-key abc -R --debug
     deps: [build-twtd]
     desc: run twtd service
     silent: false
 
   twtd-css:
     cmds:
-      - minify -b -o ./internal/static/css/twtxt.min.css ./internal/static/css/[0-9]*-*.css	
+      - minify -b -o ./internal/static/css/twtxt.min.css ./internal/static/css/[0-9]*-*.css
     sources:
       - internal/css/**/*.css
     generates:
@@ -58,7 +59,7 @@ tasks:
 
   twtd-js:
     cmds:
-      - minify -b -o ./internal/static/js/twtxt.min.js ./internal/static/js/[0-9]*-*.js		
+      - minify -b -o ./internal/static/js/twtxt.min.js ./internal/static/js/[0-9]*-*.js
     sources:
       - internal/js/**/*.js
     generates:
@@ -75,4 +76,3 @@ tasks:
     cmds:
       - goi18n merge active.*.toml translate.*.toml
     desc: goi18n merge
-
