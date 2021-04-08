@@ -703,6 +703,8 @@ func (s *Server) TimelineHandler() httprouter.Handle {
 
 		ctx := NewContext(s.config, s.db, r)
 
+		log.Infof("conext.lang=%s", ctx.Lang)
+		log.Infof("user.lang=%s", ctx.User.Lang)
 		var twts types.Twts
 
 		if !ctx.Authenticated {
@@ -1105,7 +1107,7 @@ func (s *Server) LoginHandler() httprouter.Handle {
 		user, err := s.db.GetUser(username)
 		if err != nil {
 			ctx.Error = true
-			ctx.Message = "Invalid username! Hint: Register an account?"
+			ctx.Message = s.tr(ctx, "ErrorInvalidUsername")
 			s.render("error", w, ctx)
 			return
 		}
@@ -1113,7 +1115,7 @@ func (s *Server) LoginHandler() httprouter.Handle {
 		// #239: Throttle failed login attempts and lock user  account.
 		if failures.Get(user.Username) > MaxFailedLogins {
 			ctx.Error = true
-			ctx.Message = "Too many failed login attempts. Account temporarily locked! Please try again later."
+			ctx.Message = s.tr(ctx, "ErrorMaxFailedLogins")
 			s.render("error", w, ctx)
 			return
 		}
@@ -1126,7 +1128,7 @@ func (s *Server) LoginHandler() httprouter.Handle {
 			time.Sleep(time.Duration(IntPow(2, failed)) * time.Second)
 
 			ctx.Error = true
-			ctx.Message = "Invalid password! Hint: Reset your password?"
+			ctx.Message = s.tr(ctx, "ErrorInvalidPassword")
 			s.render("error", w, ctx)
 			return
 		}
@@ -1177,7 +1179,7 @@ func (s *Server) RegisterHandler() httprouter.Handle {
 				message := s.config.RegisterMessage
 
 				if message == "" {
-					message = "Open Registrations are disabled on this pod. Please contact the pod operator."
+					message = s.tr(ctx, "ErrorRegisterDisabled")
 				}
 
 				ctx.Error = true

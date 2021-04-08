@@ -35,7 +35,7 @@ type TemplateManager struct {
 	funcMap   template.FuncMap
 }
 
-func NewTemplateManager(conf *Config, blogs *BlogsCache, cache *Cache, archive Archiver) (*TemplateManager, error) {
+func NewTemplateManager(conf *Config, translator *Translator, blogs *BlogsCache, cache *Cache, archive Archiver) (*TemplateManager, error) {
 	templates := make(map[string]*template.Template)
 
 	funcMap := sprig.FuncMap()
@@ -59,6 +59,11 @@ func NewTemplateManager(conf *Config, blogs *BlogsCache, cache *Cache, archive A
 	funcMap["urlForConv"] = URLForConvFactory(conf, cache, archive)
 	funcMap["isAdminUser"] = IsAdminUserFactory(conf)
 	funcMap["twtType"] = func(twt types.Twt) string { return fmt.Sprintf("%T", twt) }
+
+	funcMap["html"] = func(text string) template.HTML { return template.HTML(text) }
+	funcMap["tr"] = func(ctx *Context, msgid string, data ...interface{}) string {
+		return translator.Translate(ctx, msgid, data...)
+	}
 
 	m := &TemplateManager{debug: conf.Debug, templates: templates, funcMap: funcMap}
 

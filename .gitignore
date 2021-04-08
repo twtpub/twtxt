@@ -38,3 +38,6 @@
 /internal/static/js/twtxt.min.js
 
 bench-twtxt.txt
+
+.task/
+/doc/
