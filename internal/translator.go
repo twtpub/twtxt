@@ -1,27 +1,40 @@
 package internal
 
 import (
+	"fmt"
+	"io/fs"
+
 	"github.com/naoina/toml"
 	"github.com/nicksnyder/go-i18n/v2/i18n"
 	"golang.org/x/text/language"
+
+	"github.com/jointwt/twtxt/internal/langs"
 )
 
 type Translator struct {
 	Bundle *i18n.Bundle
 }
 
-func NewTranslator() *Translator {
+func NewTranslator() (*Translator, error) {
 	// lang
 	bundle := i18n.NewBundle(language.English)
 	bundle.RegisterUnmarshalFunc("toml", toml.Unmarshal)
-	// No need to load active.en.toml since we are providing default translations.
-	bundle.MustLoadMessageFile("./internal/langs/active.en.toml")
-	bundle.MustLoadMessageFile("./internal/langs/active.zh-cn.toml")
-	// bundle.LoadMessageFile("./langs/active.zh-tw.toml")
+
+	buf, err := fs.ReadFile(langs.LocaleFS, "active.en.toml")
+	if err != nil {
+		return nil, fmt.Errorf("error loading en locale: %w", err)
+	}
+	bundle.MustParseMessageFileBytes(buf, "active.en.toml")
+
+	buf, err = fs.ReadFile(langs.LocaleFS, "active.zh-cn.toml")
+	if err != nil {
+		return nil, fmt.Errorf("error loading zh-cn locale: %w", err)
+	}
+	bundle.MustParseMessageFileBytes(buf, "active.zh-cn.toml")
+
 	return &Translator{
 		Bundle: bundle,
-	}
-
+	}, nil
 }
 
 // Translate 翻译
