@@ -48,7 +48,7 @@ const (
 	// DefaultTheme is the default theme to use ('light' or 'dark')
 	DefaultTheme = "auto"
 
-	// DefaultLang is the default language to use ('en' or 'zh-CN')
+	// DefaultLang is the default language to use ('en' or 'zh-cn')
 	DefaultLang = "auto"
 
 	// DefaultOpenRegistrations is the default for open user registrations
