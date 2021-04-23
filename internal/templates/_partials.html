@@ -228,11 +228,15 @@
   <ul>
     <li>
       {{ if $.Pager.HasPrev }}
-        {{ if isLocalURL $.Ctx.Twter.URL }}
+        {{ with $.Ctx.Twter.URL }}
+          {{ if isLocalURL $.Ctx.Twter.URL }}
+            <a href="?p={{ $.Pager.PrevPage }}">{{tr $.Ctx "PagerPrevLinkTitle"}}</a>
+          {{ else }}
+            <a href="/external?uri={{ $.Ctx.Twter.URL }}&nick={{ $.Ctx.Twter.Nick }}&p={{ $.Pager.PrevPage }}">{{tr $.Ctx "PagerPrevLinkTitle"}}</a>
+          {{ end }}
+        {{ else }}
           <a href="?p={{ $.Pager.PrevPage }}">{{tr $.Ctx "PagerPrevLinkTitle"}}</a>
-        {{else}}
-        <a href="/external?uri={{ $.Ctx.Twter.URL }}&nick={{ $.Ctx.Twter.Nick }}&p={{ $.Pager.PrevPage }}">{{tr $.Ctx "PagerPrevLinkTitle"}}</a>
-        {{end}}
+        {{ end }}
       {{ else }}
       <a href="#" data-tooltip="{{tr $.Ctx "PagerNoPreviousTooltip"}}">{{tr $.Ctx "PagerPrevLinkTitle"}}</a>
       {{ end }}
@@ -244,11 +248,15 @@
   <ul>
     <li>
       {{ if $.Pager.HasNext }}
-        {{ if isLocalURL $.Ctx.Twter.URL }}
+        {{ with $.Ctx.Twter.URL }}
+          {{ if isLocalURL $.Ctx.Twter.URL }}
+            <a href="?p={{ $.Pager.NextPage }}">{{tr $.Ctx "PagerNextLinkTitle"}}</a>
+          {{ else }}
+            <a href="/external?uri={{ $.Ctx.Twter.URL }}&nick={{ $.Ctx.Twter.Nick }}&p={{ $.Pager.NextPage }}">{{tr $.Ctx "PagerNextLinkTitle"}}</a>
+          {{ end }}
+        {{ else }}
           <a href="?p={{ $.Pager.NextPage }}">{{tr $.Ctx "PagerNextLinkTitle"}}</a>
-        {{else}}
-          <a href="/external?uri={{ $.Ctx.Twter.URL }}&nick={{ $.Ctx.Twter.Nick }}&p={{ $.Pager.NextPage }}">{{tr $.Ctx "PagerNextLinkTitle"}}</a>
-        {{end}}
+        {{ end }}
       {{ else }}
       <a href="#" data-tooltip="{{tr $.Ctx "PagerNoNextTooltip"}}">{{tr $.Ctx "PagerNextLinkTitle"}}</a>
       {{ end }}
