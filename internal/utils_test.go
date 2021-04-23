@@ -2,6 +2,7 @@ package internal
 
 import (
 	"fmt"
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -86,4 +87,34 @@ func TestFormatMentionsAndTags(t *testing.T) {
 		actual := FormatMentionsAndTags(conf, testCase.text, testCase.format)
 		assert.Equal(t, testCase.expected, actual)
 	}
+}
+
+func TestIsLocalURL(t *testing.T) {
+	testCases := []struct {
+		url      string
+		baseURL  string
+		expected bool
+	}{
+		{
+			url:      "https://feeds.twtxt.cc",
+			baseURL:  "https://www.twtxt.cc",
+			expected: false,
+		},
+		{
+			url:      "http://localhost:8001",
+			baseURL:  "http://localhost:8000",
+			expected: false,
+		},
+		{
+			url:      "http://localhost:8000/ext",
+			baseURL:  "http://localhost:8000",
+			expected: true,
+		},
+	}
+
+	for _, testCase := range testCases {
+		actual := strings.HasPrefix(NormalizeURL(testCase.url), NormalizeURL(testCase.baseURL))
+		assert.Equal(t, testCase.expected, actual)
+	}
+
 }
