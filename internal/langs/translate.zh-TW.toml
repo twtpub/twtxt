@@ -1,15 +1,3 @@
-[ErrorGetUser]
-hash = "sha1-ae292a347c8c892dff4fc81976b3736fd15cbfc6"
-other = "獲取用戶出錯"
-
-[MsgTransferFeedSuccess]
-hash = "sha1-562fb7a829c098116e4f3e5eedea209998209fd9"
-other = "改變 Feed 所有者成功"
-
-[TransferFeedFormConfirm]
-hash = "sha1-1d1a2a5ca176b94b13d6393b44db100201c5cd98"
-other = "你確定要將 Feed 轉移到這個用戶？此操作無法撤消！"
-
-[TransferUserFeedSummary]
-hash = "sha1-82a625ec39852607779e48c250bbc3b9a1afa838"
-other = "改變 <b>{{ .Username }}</b> 所有者"
+[FeedsExternalFeedsContent]
+hash = "sha1-0fad196ca824fdcea89ee5593f4a71313bd27b66"
+other = "<p>\n這是您可以訂閱並關注的外部 Feed 列表。這些 Feed 源由 {{.InstanceName}} 運營商從外部獲取和配置。默認情況下， <a href=\"https://www.twtxt.cc\">twtxt.cc</a> 來自以下來源：<ul>\n<li><a href=\"https://feeds.twtxt.cc\">feeds.twtxt.cc</a> RSS/Atom 到 twtxt feed 的聚合器</li>\n<li><a href=\"https://raw.githubusercontent.com/jointwt/we-are-twtxt/master/we-are-bots.txt\">we-are-bots</a> twtxt機器人目錄(<i>自動 Feeds</i>)</li>\n<li><a href=\"https://raw.githubusercontent.com/jointwt/we-are-twtxt/master/we-are-twtxt.txt\">we-are-twtxt</a> twtxt用戶目錄(<i>由自願將自己添加到此列表的用戶管理</i>)</li>\n</ul>\n</p>\n<p>\n如果要添加新的外部 Feed：<ul>\n<li>首先，確保它是有效的RSS或Atom Feed(<i><a href=\"https://en.wikipedia.org/wiki/Atom_(Web_standard)\">有效Feed?</a></i>)。</li>\n<li>訪問<a href=\"https://feeds.twtxt.cc\">feeds.twtxt.cc</a>並給 Feed 命名，然後輸入RSS/Atom URL並點擊 Add 提交。</li>\n</ul>\n幾分鍾後，新添加的外部 Feed 將顯示在 {{ .InstanceName }} 實例 <a href=\"https://www.twtxt.cc/feeds\">/feeds</a> 中。\n</p>"
