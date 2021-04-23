@@ -54,7 +54,7 @@ require (
 	github.com/mitchellh/reflectwalk v1.0.1 // indirect
 	github.com/naoina/go-stringutil v0.1.0 // indirect
 	github.com/naoina/toml v0.1.1
-	github.com/nicksnyder/go-i18n/v2 v2.1.2 // indirect
+	github.com/nicksnyder/go-i18n/v2 v2.1.2
 	github.com/nullrocks/identicon v0.0.0-20180626043057-7875f45b0022
 	github.com/patrickmn/go-cache v2.1.0+incompatible
 	github.com/pelletier/go-toml v1.8.1 // indirect
@@ -78,7 +78,7 @@ require (
 	github.com/steambap/captcha v1.3.1
 	github.com/stretchr/objx v0.3.0 // indirect
 	github.com/stretchr/testify v1.6.1
-	github.com/tdewolff/minify/v2 v2.9.15 // indirect
+	github.com/tdewolff/test v1.0.6
 	github.com/tebeka/selenium v0.9.9
 	github.com/theplant-retired/timezones v0.0.0-20150304063004-f9bd3c0ef9db
 	github.com/unrolled/logger v0.0.0-20201216141554-31a3694fe979
