@@ -1,15 +1,15 @@
-[ErrorGetUser]
-hash = "sha1-ae292a347c8c892dff4fc81976b3736fd15cbfc6"
-other = "獲取用戶出錯"
+[ErrorNoFeedByNick]
+hash = "sha1-de30a4714a243dc78cfe242419ba447532603673"
+other = "沒有找到 {{.Nick}} 的 Feed"
 
-[MsgTransferFeedSuccess]
-hash = "sha1-562fb7a829c098116e4f3e5eedea209998209fd9"
-other = "改變 Feed 所有者成功"
+[ErrorNoNick]
+hash = "sha1-2e0398c6377124d05a7fcb0a83bc2973692aa17c"
+other = "沒有指定取消跟隨用戶的暱稱"
 
-[TransferFeedFormConfirm]
-hash = "sha1-1d1a2a5ca176b94b13d6393b44db100201c5cd98"
-other = "你確定要將 Feed 轉移到這個用戶？此操作無法撤消！"
+[ErrorUnfollowingFeed]
+hash = "sha1-430f3f412e0802c05e45dc4f23d83059d08079e9"
+other = "{{.Nick}}: {{.URL}} 取消跟隨出錯"
 
-[TransferUserFeedSummary]
-hash = "sha1-82a625ec39852607779e48c250bbc3b9a1afa838"
-other = "改變 <b>{{ .Username }}</b> 所有者"
+[MsgUnfollowSuccess]
+hash = "sha1-afaf49fe9f7ccb11463b3d5beebe99bca5759402"
+other = "{{.Nick}}: {{.URL}} 取消跟隨成功"
