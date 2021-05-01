@@ -15,7 +15,7 @@ your content, your data!
 > or the fear of censorship. Think of twtxt as somewhat like Twitter™ but
 > unlike Twitter™ twtxt and {{ .InstanceName }} are designed to be decentralised.
 
-The [/timeline](/timeline) view displays the latest posts of users on this
+The [/timeline](/) view displays the latest posts of users on this
 instance. Since _twtxt_ itself is a federated and decentralised
 micro-blogging format there is no "global" timeline, so you can only discover
 posts from users on the same instance as you are on (_{{ .InstanceName }}
