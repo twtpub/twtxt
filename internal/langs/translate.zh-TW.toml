@@ -1,7 +1,27 @@
-[ErrorLoadingTwtFromArchive]
-hash = "sha1-166cf1c04231010e14b7b9c23807ea51e6eda339"
-other = "從存檔中加載推文出錯，請重試"
+[ErrorLoadingDiscover]
+hash = "sha1-6c78d0bc64a477cc75cec7a5f9c1b5800b402689"
+other = "加載發現數據出錯"
 
-[ErrorNoMatchingTwt]
-hash = "sha1-526a0a4c76372ff65d69af750d50c42d1ba6a9fa"
-other = "沒有找到匹配的推文"
+[ErrorLoadingFeeds]
+hash = "sha1-5662fba6346ae041c64d1c03359096c393fa7ed2"
+other = "加載 Feeds 出錯"
+
+[ErrorLoadingMentions]
+hash = "sha1-c6cad6996851c5c491ed46f42993b0941046f79d"
+other = "加載提及數據出錯"
+
+[ErrorLoadingSearch]
+hash = "sha1-9467f15a910dc86e62545b9e20f2b0e756d40646"
+other = "加載搜索數據出錯"
+
+[ErrorNotTag]
+hash = "sha1-2276504b9c8d9474f6b925d51dbf30b488b7e536"
+other = "搜索條件是必須提供的"
+
+[ErrorUpdatingUser]
+hash = "sha1-4f65c2690abff8c08713b6d3c5027fdc8eea0f67"
+other = "更新用戶出錯"
+
+[MsgUpdateSettingsSuccess]
+hash = "sha1-2d15d8d21abf06dce5cbabec0cf63139ff64c3da"
+other = "更新設置成功"

@@ -909,7 +909,7 @@ func (s *Server) DiscoverHandler() httprouter.Handle {
 		if err := pager.Results(&pagedTwts); err != nil {
 			log.WithError(err).Error("error sorting and paging twts")
 			ctx.Error = true
-			ctx.Message = "An error occurred while loading the timeline"
+			ctx.Message = s.tr(ctx, "ErrorLoadingDiscover")
 			s.render("error", w, ctx)
 			return
 		}
@@ -919,7 +919,7 @@ func (s *Server) DiscoverHandler() httprouter.Handle {
 			if err != nil {
 				log.WithError(err).Error("error getting user last twt")
 				ctx.Error = true
-				ctx.Message = "An error occurred while loading the timeline"
+				ctx.Message = s.tr(ctx, "ErrorLoadingDiscover")
 				s.render("error", w, ctx)
 				return
 			}
@@ -951,7 +951,7 @@ func (s *Server) MentionsHandler() httprouter.Handle {
 
 		if err := pager.Results(&pagedTwts); err != nil {
 			ctx.Error = true
-			ctx.Message = "An error occurred while loading mentions"
+			ctx.Message = s.tr(ctx, "ErrorLoadingMentions")
 			s.render("error", w, ctx)
 			return
 		}
@@ -975,7 +975,7 @@ func (s *Server) SearchHandler() httprouter.Handle {
 
 		if tag == "" {
 			ctx.Error = true
-			ctx.Message = "At least search query is required"
+			ctx.Message = s.tr(ctx, "ErrorNoTag")
 			s.render("error", w, ctx)
 		}
 
@@ -1004,7 +1004,7 @@ func (s *Server) SearchHandler() httprouter.Handle {
 
 		if err := pager.Results(&pagedTwts); err != nil {
 			ctx.Error = true
-			ctx.Message = "An error occurred while loading search results"
+			ctx.Message = s.tr(ctx, "ErrorLoadingSearch")
 			s.render("error", w, ctx)
 			return
 		}
@@ -1077,7 +1077,7 @@ func (s *Server) FeedsHandler() httprouter.Handle {
 		feeds, err := s.db.GetAllFeeds()
 		if err != nil {
 			ctx.Error = true
-			ctx.Message = "An error occurred while loading feeds"
+			ctx.Message = s.tr(ctx, "ErrorLoadingFeeds")
 			s.render("error", w, ctx)
 			return
 		}
@@ -1085,7 +1085,7 @@ func (s *Server) FeedsHandler() httprouter.Handle {
 		feedsources, err := LoadFeedSources(s.config.Data)
 		if err != nil {
 			ctx.Error = true
-			ctx.Message = "An error occurred while loading feeds"
+			ctx.Message = s.tr(ctx, "ErrorLoadingFeeds")
 			s.render("error", w, ctx)
 			return
 		}
@@ -1401,13 +1401,13 @@ func (s *Server) SettingsHandler() httprouter.Handle {
 
 		if err := s.db.SetUser(ctx.Username, user); err != nil {
 			ctx.Error = true
-			ctx.Message = "Error updating user"
+			ctx.Message = s.tr(ctx, "ErrorUpdatingUser")
 			s.render("error", w, ctx)
 			return
 		}
 
 		ctx.Error = false
-		ctx.Message = "Successfully updated settings"
+		ctx.Message = s.tr(ctx, "MsgUpdateSettingsSuccess")
 		s.render("error", w, ctx)
 
 	}
