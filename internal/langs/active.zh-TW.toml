@@ -178,6 +178,10 @@ other = "創建 Feed 錯誤：{{.Error}}"
 hash = "sha1-cd9626a561e932d586d048805638b6137b3aa683"
 other = "刪除推文出錯"
 
+[ErrorDeletingToken]
+hash = "sha1-1af9bbd37b3a74e097e702ce8a78b9525b9a2948"
+other = "刪除令牌出錯"
+
 [ErrorFeedNotFound]
 hash = "sha1-d01bdf9ce19f5e183eb2058e4d58a7b5b472f3d4"
 other = "沒有找到 Feed"
@@ -258,6 +262,10 @@ other = "太多次登錄失敗. 賬號臨時鎖定, 請稍候再試."
 hash = "sha1-39346eb648d77a1728736407c7ab8eb83c266df1"
 other = "呢稱 和 URL 必須指定"
 
+[ErrorNoExternalFeed]
+hash = "sha1-851bdf435c847926b563a3b23a7249fe1a605734"
+other = "沒有找到外部 Feed"
+
 [ErrorNoFeed]
 hash = "sha1-deeac7f92541e6e5f348dc5becc59db7accdf8aa"
 other = "沒有 Feed 指定"
@@ -278,13 +286,13 @@ other = "沒有指定取消跟隨用戶的暱稱"
 hash = "sha1-dbb586ba4bf044dc51ea2349c24857415e0dfaa9"
 other = "沒有提供內容"
 
+[ErrorNoTag]
+hash = "sha1-2276504b9c8d9474f6b925d51dbf30b488b7e536"
+other = "查詢條件是必須提供的"
+
 [ErrorNoUser]
 hash = "sha1-cabcfb0173ca7b5ff0b0f90a0ee2207b02d39843"
 other = "沒有用戶指定"
-
-[ErrorNotTag]
-hash = "sha1-2276504b9c8d9474f6b925d51dbf30b488b7e536"
-other = "搜索條件是必須提供的"
 
 [ErrorPostingTwt]
 hash = "sha1-3335fb1d3ffbc64fc705a63b65a2fee6563c83b1"
@@ -321,6 +329,10 @@ other = "{{.Nick}}: {{.URL}} 取消跟隨出錯"
 [ErrorUpdatingUser]
 hash = "sha1-4f65c2690abff8c08713b6d3c5027fdc8eea0f67"
 other = "更新用戶出錯"
+
+[ErrorUserNotFound]
+hash = "sha1-9acd623494620b9d4d5dbb91781a138357019593"
+other = "用戶沒有找到"
 
 [ErrorUserOrFeedNotFound]
 hash = "sha1-6a0c81d17564254c7cc8e59f3c34038911a4ed11"
@@ -618,6 +630,10 @@ other = "Feed 歸檔成功"
 hash = "sha1-6c4ce8b4a48e6461594c84e727c722730f967af1"
 other = "創建 {{.Feed}} 成功！"
 
+[MsgDeleteTokenSuccess]
+hash = "sha1-065262182c05fd1ffe90891963591d5589fc1581"
+other = "刪除令牌成功"
+
 [MsgFollowUserSuccess]
 hash = "sha1-4633defa720997f5a179070ffe8ebc6264424ecc"
 other = "{{.Nick}}: {{.URL}} 跟隨成功"
@@ -693,6 +709,10 @@ other = "還沒有推文... 稍候再來！"
 [PageDiscoverTitle]
 hash = "sha1-4827ea22716a74aaf8bbe499fc314bb93f73c65e"
 other = "發現"
+
+[PageExternalProfileTitle]
+hash = "sha1-3b7d3a2f266ef12cc74e125fd87a67d6a082898f"
+other = "外部配置 @<{{.Nick}} {{.URL}}>"
 
 [PageFeedsTitle]
 hash = "sha1-ffe8e99492ee9b850395d53f6c519938952fde0d"

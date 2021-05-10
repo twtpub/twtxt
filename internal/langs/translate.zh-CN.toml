@@ -1,27 +1,23 @@
-[ErrorLoadingDiscover]
-hash = "sha1-6c78d0bc64a477cc75cec7a5f9c1b5800b402689"
-other = "加载发现数据出错"
+[ErrorDeletingToken]
+hash = "sha1-1af9bbd37b3a74e097e702ce8a78b9525b9a2948"
+other = "删除令牌出错"
 
-[ErrorLoadingFeeds]
-hash = "sha1-5662fba6346ae041c64d1c03359096c393fa7ed2"
-other = "加载 Feeds 出错"
+[ErrorNoExternalFeed]
+hash = "sha1-851bdf435c847926b563a3b23a7249fe1a605734"
+other = "不能找到外部 Feed"
 
-[ErrorLoadingMentions]
-hash = "sha1-c6cad6996851c5c491ed46f42993b0941046f79d"
-other = "加载提及数据出错"
-
-[ErrorLoadingSearch]
-hash = "sha1-9467f15a910dc86e62545b9e20f2b0e756d40646"
-other = "加载搜索数据出错"
-
-[ErrorNotTag]
+[ErrorNoTag]
 hash = "sha1-2276504b9c8d9474f6b925d51dbf30b488b7e536"
-other = "搜索条件是必须提供的"
+other = "搜索条件必须提供"
 
-[ErrorUpdatingUser]
-hash = "sha1-4f65c2690abff8c08713b6d3c5027fdc8eea0f67"
-other = "更新用户出错"
+[ErrorUserNotFound]
+hash = "sha1-9acd623494620b9d4d5dbb91781a138357019593"
+other = "用户没有找到"
 
-[MsgUpdateSettingsSuccess]
-hash = "sha1-2d15d8d21abf06dce5cbabec0cf63139ff64c3da"
-other = "更新设置成功"
+[MsgDeleteTokenSuccess]
+hash = "sha1-065262182c05fd1ffe90891963591d5589fc1581"
+other = "删除令牌成功"
+
+[PageExternalProfileTitle]
+hash = "sha1-3b7d3a2f266ef12cc74e125fd87a67d6a082898f"
+other = "外部配置 @<{{.Nick}} {{.URL}}>"

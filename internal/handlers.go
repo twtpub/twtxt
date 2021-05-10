@@ -1422,13 +1422,13 @@ func (s *Server) DeleteTokenHandler() httprouter.Handle {
 
 		if err := s.db.DelToken(signature); err != nil {
 			ctx.Error = true
-			ctx.Message = "Error deleting token"
+			ctx.Message = s.tr(ctx, "ErrorDeletingToken")
 			s.render("error", w, ctx)
 			return
 		}
 
 		ctx.Error = false
-		ctx.Message = "Successfully deleted token"
+		ctx.Message = s.tr(ctx, "MsgDeleteTokenSuccess")
 
 		http.Redirect(w, r, "/settings", http.StatusFound)
 
@@ -1447,7 +1447,7 @@ func (s *Server) FollowersHandler() httprouter.Handle {
 			if err != nil {
 				log.WithError(err).Errorf("error loading user object for %s", nick)
 				ctx.Error = true
-				ctx.Message = "Error loading profile"
+				ctx.Message = s.tr(ctx, "ErrorLoadingProfile")
 				s.render("error", w, ctx)
 				return
 			}
@@ -1462,14 +1462,14 @@ func (s *Server) FollowersHandler() httprouter.Handle {
 			if err != nil {
 				log.WithError(err).Errorf("error loading feed object for %s", nick)
 				ctx.Error = true
-				ctx.Message = "Error loading profile"
+				ctx.Message = s.tr(ctx, "ErrorLoadingProfile")
 				s.render("error", w, ctx)
 				return
 			}
 			ctx.Profile = feed.Profile(s.config.BaseURL, ctx.User)
 		} else {
 			ctx.Error = true
-			ctx.Message = "User or Feed Not Found"
+			ctx.Message = s.tr(ctx, "ErrorUserOrFeedNotFound")
 			s.render("404", w, ctx)
 			return
 		}
@@ -1506,7 +1506,7 @@ func (s *Server) FollowingHandler() httprouter.Handle {
 			if err != nil {
 				log.WithError(err).Errorf("error loading user object for %s", nick)
 				ctx.Error = true
-				ctx.Message = "Error loading profile"
+				ctx.Message = s.tr(ctx, "ErrorLoadingProfile")
 				s.render("error", w, ctx)
 				return
 			}
@@ -1518,7 +1518,7 @@ func (s *Server) FollowingHandler() httprouter.Handle {
 			ctx.Profile = user.Profile(s.config.BaseURL, ctx.User)
 		} else {
 			ctx.Error = true
-			ctx.Message = "User Not Found"
+			ctx.Message = s.tr(ctx, "ErrorUserNotFound")
 			s.render("404", w, ctx)
 			return
 		}
@@ -1554,7 +1554,7 @@ func (s *Server) ExternalHandler() httprouter.Handle {
 
 		if uri == "" {
 			ctx.Error = true
-			ctx.Message = "Cannot find external feed"
+			ctx.Message = s.tr(ctx, "ErrorNoExternalFeed")
 			s.render("error", w, ctx)
 			return
 		}
@@ -1581,7 +1581,7 @@ func (s *Server) ExternalHandler() httprouter.Handle {
 		if err := pager.Results(&pagedTwts); err != nil {
 			log.WithError(err).Error("error sorting and paging twts")
 			ctx.Error = true
-			ctx.Message = "An error occurred while loading the timeline"
+			ctx.Message = s.tr(ctx, "ErrorLoadingTimeline")
 			s.render("error", w, ctx)
 			return
 		}
@@ -1609,7 +1609,10 @@ func (s *Server) ExternalHandler() httprouter.Handle {
 			Muted:      ctx.User.HasMuted(uri),
 		}
 
-		ctx.Title = fmt.Sprintf("External profile for @<%s %s>", nick, uri)
+		trdata := map[string]interface{}{}
+		trdata["Nick"] = nick
+		trdata["URL"] = uri
+		ctx.Title = s.tr(ctx, "PageExternalProfileTitle", trdata)
 		s.render("externalProfile", w, ctx)
 	}
 }
