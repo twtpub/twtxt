@@ -85,7 +85,7 @@ func (s *Server) PageHandler(name string) httprouter.Handle {
 		if err != nil {
 			log.WithError(err).Errorf("error rendering page %s", name)
 			ctx.Error = true
-			ctx.Message = "Error loading help page! Please contact support."
+			ctx.Message = s.tr(ctx, "ErrorRenderingPage")
 			s.render("error", w, ctx)
 			return
 		}
@@ -95,7 +95,7 @@ func (s *Server) PageHandler(name string) httprouter.Handle {
 		if err != nil {
 			log.WithError(err).Error("error parsing front matter")
 			ctx.Error = true
-			ctx.Message = "Error loading page! Please contact support."
+			ctx.Message = s.tr(ctx, "ErrorLoadingPage")
 			s.render("error", w, ctx)
 			return
 		}
@@ -213,7 +213,7 @@ func (s *Server) ProfileHandler() httprouter.Handle {
 		nick := NormalizeUsername(p.ByName("nick"))
 		if nick == "" {
 			ctx.Error = true
-			ctx.Message = "No user specified"
+			ctx.Message = s.tr(ctx, "ErrorNoUser")
 			s.render("error", w, ctx)
 			return
 		}
@@ -227,7 +227,7 @@ func (s *Server) ProfileHandler() httprouter.Handle {
 			if err != nil {
 				log.WithError(err).Errorf("error loading user object for %s", nick)
 				ctx.Error = true
-				ctx.Message = "Error loading profile"
+				ctx.Message = s.tr(ctx, "ErrorLoadingProfile")
 				s.render("error", w, ctx)
 				return
 			}
@@ -237,14 +237,14 @@ func (s *Server) ProfileHandler() httprouter.Handle {
 			if err != nil {
 				log.WithError(err).Errorf("error loading feed object for %s", nick)
 				ctx.Error = true
-				ctx.Message = "Error loading profile"
+				ctx.Message = s.tr(ctx, "ErrorLoadingProfile")
 				s.render("error", w, ctx)
 				return
 			}
 			profile = feed.Profile(s.config.BaseURL, ctx.User)
 		} else {
 			ctx.Error = true
-			ctx.Message = "User or Feed Not Found"
+			ctx.Message = s.tr(ctx, "ErrorUserOrFeedNotFound")
 			s.render("404", w, ctx)
 			return
 		}
@@ -280,7 +280,7 @@ func (s *Server) ProfileHandler() httprouter.Handle {
 		if err := pager.Results(&pagedTwts); err != nil {
 			log.WithError(err).Error("error sorting and paging twts")
 			ctx.Error = true
-			ctx.Message = "An error occurred while loading the timeline"
+			ctx.Message = s.tr(ctx, "ErrorLoadingTimeline")
 			s.render("error", w, ctx)
 			return
 		}

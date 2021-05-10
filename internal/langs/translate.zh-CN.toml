@@ -1,7 +1,23 @@
-[ErrorNoPostContent]
-hash = "sha1-dbb586ba4bf044dc51ea2349c24857415e0dfaa9"
-other = "没有提供内容"
+[ErrorLoadingPage]
+hash = "sha1-be333bf165f0958ae075b50b9f978e75bd63f940"
+other = "加载页面出错！请联系客服。"
 
-[ErrorPostingTwt]
-hash = "sha1-3335fb1d3ffbc64fc705a63b65a2fee6563c83b1"
-other = "发表推文出错"
+[ErrorLoadingProfile]
+hash = "sha1-6b4851574aeb122eb0eb5551decacc8acfaadb0e"
+other = "加载用户配置出错"
+
+[ErrorLoadingTimeline]
+hash = "sha1-aab0d6f0ea631fdcbe5ec82b50b086ae23c5c82a"
+other = "加载动态时发生了错误"
+
+[ErrorNoUser]
+hash = "sha1-cabcfb0173ca7b5ff0b0f90a0ee2207b02d39843"
+other = "没有用户指定"
+
+[ErrorRenderingPage]
+hash = "sha1-765bc9593ea073002bbab83104e0bab31a160733"
+other = "加载页面出错！请联系客服。"
+
+[ErrorUserOrFeedNotFound]
+hash = "sha1-6a0c81d17564254c7cc8e59f3c34038911a4ed11"
+other = "用户 或 Feed 没有找到"

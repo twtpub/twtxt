@@ -210,6 +210,18 @@ other = "密碼無效! 提示: 重新設置密碼?"
 hash = "sha1-c1d07ba7f57bf718dfb346b21773834cc34c7fcd"
 other = "用戶名無效! 提示: 註冊一個賬號?"
 
+[ErrorLoadingPage]
+hash = "sha1-be333bf165f0958ae075b50b9f978e75bd63f940"
+other = "加載頁面出錯，請聯繫客服。"
+
+[ErrorLoadingProfile]
+hash = "sha1-6b4851574aeb122eb0eb5551decacc8acfaadb0e"
+other = "加載用戶配置出錯"
+
+[ErrorLoadingTimeline]
+hash = "sha1-aab0d6f0ea631fdcbe5ec82b50b086ae23c5c82a"
+other = "加載動態時發生了錯誤"
+
 [ErrorMaxFailedLogins]
 hash = "sha1-dbebd52a4449b3d284699bd8f79dc7d55699e754"
 other = "太多次登錄失敗. 賬號臨時鎖定, 請稍候再試."
@@ -234,6 +246,10 @@ other = "沒有指定取消跟隨用戶的暱稱"
 hash = "sha1-dbb586ba4bf044dc51ea2349c24857415e0dfaa9"
 other = "沒有提供內容"
 
+[ErrorNoUser]
+hash = "sha1-cabcfb0173ca7b5ff0b0f90a0ee2207b02d39843"
+other = "沒有用戶指定"
+
 [ErrorPostingTwt]
 hash = "sha1-3335fb1d3ffbc64fc705a63b65a2fee6563c83b1"
 other = "發表推文出錯"
@@ -241,6 +257,10 @@ other = "發表推文出錯"
 [ErrorRegisterDisabled]
 hash = "sha1-58ae30a9afd39e0111c2d0864b81bb12b799820e"
 other = "當前實例禁止註冊, 請聯繫管理員。"
+
+[ErrorRenderingPage]
+hash = "sha1-765bc9593ea073002bbab83104e0bab31a160733"
+other = "加載頁面出錯，請聯繫客服。"
 
 [ErrorSetFeed]
 hash = "sha1-53f11f7d64c54fdbe51c1650696a7a5f1f4fc011"
@@ -261,6 +281,10 @@ other = "錯誤"
 [ErrorUnfollowingFeed]
 hash = "sha1-430f3f412e0802c05e45dc4f23d83059d08079e9"
 other = "{{.Nick}}: {{.URL}} 取消跟隨出錯"
+
+[ErrorUserOrFeedNotFound]
+hash = "sha1-6a0c81d17564254c7cc8e59f3c34038911a4ed11"
+other = "用戶 或 Feed 沒有找到"
 
 [ErrorUsernameExists]
 hash = "sha1-a66924d2fc116739aecea8d10e3ff1fe0570b476"
