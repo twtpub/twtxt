@@ -1,23 +1,19 @@
-[ErrorDeletingToken]
-hash = "sha1-1af9bbd37b3a74e097e702ce8a78b9525b9a2948"
-other = "删除令牌出错"
+[DeleteAccountFormConfirm]
+hash = "sha1-30b058bb7a1cbd2ae222ec6e0d00e22bcaaadac5"
+other = "您确定要删除账号及所有内容? 此操作无法恢复"
 
-[ErrorNoExternalFeed]
-hash = "sha1-851bdf435c847926b563a3b23a7249fe1a605734"
-other = "不能找到外部 Feed"
+[DeleteAccountFormDeleteAll]
+hash = "sha1-97f32d67c7021a7b7f009703c3db00d6bcb78fab"
+other = "全部删除"
 
-[ErrorNoTag]
-hash = "sha1-2276504b9c8d9474f6b925d51dbf30b488b7e536"
-other = "搜索条件必须提供"
+[DeleteAccountNoFeedsSummary]
+hash = "sha1-f7e7f28bf453358e2163d12e530797c71c96d4df"
+other = "您没有任何 Feeds。"
 
-[ErrorUserNotFound]
-hash = "sha1-9acd623494620b9d4d5dbb91781a138357019593"
-other = "用户没有找到"
+[DeleteAccountSummary]
+hash = "sha1-fc2d82acff9d38666535ec7528e90dc904cb659b"
+other = "您的账号将被永久删除！"
 
-[MsgDeleteTokenSuccess]
-hash = "sha1-065262182c05fd1ffe90891963591d5589fc1581"
-other = "删除令牌成功"
-
-[PageExternalProfileTitle]
-hash = "sha1-3b7d3a2f266ef12cc74e125fd87a67d6a082898f"
-other = "外部配置 @<{{.Nick}} {{.URL}}>"
+[DeleteAccountTitle]
+hash = "sha1-ee1b9a9f2347505649f78cec43af6e1e86231474"
+other = "删除账号"

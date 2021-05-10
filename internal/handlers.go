@@ -1725,7 +1725,7 @@ func (s *Server) ResetPasswordHandler() httprouter.Handle {
 		// Check if user exist
 		if !s.db.HasUser(username) {
 			ctx.Error = true
-			ctx.Message = "User not found!"
+			ctx.Message = s.tr(ctx, "ErrorUserNotFound")
 			s.render("error", w, ctx)
 			return
 		}
@@ -1734,14 +1734,14 @@ func (s *Server) ResetPasswordHandler() httprouter.Handle {
 		user, err := s.db.GetUser(username)
 		if err != nil {
 			ctx.Error = true
-			ctx.Message = "Error loading user"
+			ctx.Message = s.tr(ctx, "ErrorGetUser")
 			s.render("error", w, ctx)
 			return
 		}
 
 		if recovery != user.Recovery {
 			ctx.Error = true
-			ctx.Message = "Error! The email address you supplied does not match what you registered with :/"
+			ctx.Message = s.tr(ctx, "ErrorUserRecovery")
 			s.render("error", w, ctx)
 			return
 		}
@@ -1778,7 +1778,7 @@ func (s *Server) ResetPasswordHandler() httprouter.Handle {
 
 		// Show success msg
 		ctx.Error = false
-		ctx.Message = "Password request request sent! Please check your email and follow the instructions"
+		ctx.Message = s.tr(ctx, "MsgUserRecoveryRequestSent")
 		s.render("error", w, ctx)
 	}
 }
@@ -1794,7 +1794,7 @@ func (s *Server) ResetPasswordMagicLinkHandler() httprouter.Handle {
 		// Check if valid token
 		if !ok || len(tokens[0]) < 1 {
 			ctx.Error = true
-			ctx.Message = "Invalid token"
+			ctx.Message = s.tr(ctx, "ErrorInvalidToken")
 			s.render("error", w, ctx)
 			return
 		}
@@ -1840,7 +1840,7 @@ func (s *Server) NewPasswordHandler() httprouter.Handle {
 			// Check token expiry
 			if secs > int64(expiresAt) {
 				ctx.Error = true
-				ctx.Message = "Token expires"
+				ctx.Message = s.tr(ctx, "ErrorTokenExpires")
 				s.render("error", w, ctx)
 				return
 			}
@@ -1848,7 +1848,7 @@ func (s *Server) NewPasswordHandler() httprouter.Handle {
 			user, err := s.db.GetUser(username)
 			if err != nil {
 				ctx.Error = true
-				ctx.Message = "Error loading user"
+				ctx.Message = s.tr(ctx, "ErrorGetUser")
 				s.render("error", w, ctx)
 				return
 			}
@@ -1858,7 +1858,7 @@ func (s *Server) NewPasswordHandler() httprouter.Handle {
 				hash, err := s.pm.CreatePassword(password)
 				if err != nil {
 					ctx.Error = true
-					ctx.Message = "Error loading user"
+					ctx.Message = s.tr(ctx, "ErrorGetUser")
 					s.render("error", w, ctx)
 					return
 				}
@@ -1868,7 +1868,7 @@ func (s *Server) NewPasswordHandler() httprouter.Handle {
 				// Save user
 				if err := s.db.SetUser(username, user); err != nil {
 					ctx.Error = true
-					ctx.Message = "Error loading user"
+					ctx.Message = s.tr(ctx, "ErrorGetUser")
 					s.render("error", w, ctx)
 					return
 				}
@@ -1878,7 +1878,7 @@ func (s *Server) NewPasswordHandler() httprouter.Handle {
 
 			// Show success msg
 			ctx.Error = false
-			ctx.Message = "Password reset successfully."
+			ctx.Message = s.tr(ctx, "MsgPasswordResetSuccess")
 			s.render("error", w, ctx)
 		} else {
 			ctx.Error = true
@@ -2122,7 +2122,7 @@ func (s *Server) DeleteAllHandler() httprouter.Handle {
 		feeds, err := s.db.GetAllFeeds()
 		if err != nil {
 			ctx.Error = true
-			ctx.Message = "An error occured whilst deleting your account"
+			ctx.Message = s.tr(ctx, "ErrorDeletingAccount")
 			s.render("error", w, ctx)
 			return
 		}
@@ -2138,7 +2138,7 @@ func (s *Server) DeleteAllHandler() httprouter.Handle {
 						twts, err := GetAllTwts(s.config, nick)
 						if err != nil {
 							ctx.Error = true
-							ctx.Message = "An error occured whilst deleting your account"
+							ctx.Message = s.tr(ctx, "ErrorDeletingAccount")
 							s.render("error", w, ctx)
 							return
 						}
@@ -2148,7 +2148,7 @@ func (s *Server) DeleteAllHandler() httprouter.Handle {
 							// Delete archived twts
 							if err := s.archive.Del(twt.Hash()); err != nil {
 								ctx.Error = true
-								ctx.Message = "An error occured whilst deleting your account"
+								ctx.Message = s.tr(ctx, "ErrorDeletingAccount")
 								s.render("error", w, ctx)
 								return
 							}
@@ -2162,7 +2162,7 @@ func (s *Server) DeleteAllHandler() httprouter.Handle {
 								if FileExists(fn) {
 									if err := os.Remove(fn); err != nil {
 										ctx.Error = true
-										ctx.Message = "An error occured whilst deleting your account"
+										ctx.Message = s.tr(ctx, "ErrorDeletingAccount")
 										s.render("error", w, ctx)
 										return
 									}
@@ -2173,7 +2173,7 @@ func (s *Server) DeleteAllHandler() httprouter.Handle {
 								if FileExists(fn) {
 									if err := os.Remove(fn); err != nil {
 										ctx.Error = true
-										ctx.Message = "An error occured whilst deleting your account"
+										ctx.Message = s.tr(ctx, "ErrorDeletingAccount")
 										s.render("error", w, ctx)
 										return
 									}
@@ -2186,7 +2186,7 @@ func (s *Server) DeleteAllHandler() httprouter.Handle {
 				// Delete feed
 				if err := s.db.DelFeed(nick); err != nil {
 					ctx.Error = true
-					ctx.Message = "An error occured whilst deleting your account"
+					ctx.Message = s.tr(ctx, "ErrorDeletingAccount")
 					s.render("error", w, ctx)
 					return
 				}
@@ -2197,7 +2197,7 @@ func (s *Server) DeleteAllHandler() httprouter.Handle {
 					if err := os.Remove(fn); err != nil {
 						log.WithError(err).Error("error removing feed")
 						ctx.Error = true
-						ctx.Message = "An error occured whilst deleting your account"
+						ctx.Message = s.tr(ctx, "ErrorDeletingAccount")
 						s.render("error", w, ctx)
 					}
 				}
@@ -2211,7 +2211,7 @@ func (s *Server) DeleteAllHandler() httprouter.Handle {
 		twts, err := GetAllTwts(s.config, ctx.User.Username)
 		if err != nil {
 			ctx.Error = true
-			ctx.Message = "An error occured whilst deleting your account"
+			ctx.Message = s.tr(ctx, "ErrorDeletingAccount")
 			s.render("error", w, ctx)
 			return
 		}
@@ -2221,7 +2221,7 @@ func (s *Server) DeleteAllHandler() httprouter.Handle {
 			// Delete archived twts
 			if err := s.archive.Del(twt.Hash()); err != nil {
 				ctx.Error = true
-				ctx.Message = "An error occured whilst deleting your account"
+				ctx.Message = s.tr(ctx, "ErrorDeletingAccount")
 				s.render("error", w, ctx)
 				return
 			}
@@ -2236,7 +2236,7 @@ func (s *Server) DeleteAllHandler() httprouter.Handle {
 					if err := os.Remove(fn); err != nil {
 						log.WithError(err).Error("error removing media")
 						ctx.Error = true
-						ctx.Message = "An error occured whilst deleting your account"
+						ctx.Message = s.tr(ctx, "ErrorDeletingAccount")
 						s.render("error", w, ctx)
 					}
 				}
@@ -2247,7 +2247,7 @@ func (s *Server) DeleteAllHandler() httprouter.Handle {
 					if err := os.Remove(fn); err != nil {
 						log.WithError(err).Error("error removing media")
 						ctx.Error = true
-						ctx.Message = "An error occured whilst deleting your account"
+						ctx.Message = s.tr(ctx, "ErrorDeletingAccount")
 						s.render("error", w, ctx)
 					}
 				}
@@ -2257,7 +2257,7 @@ func (s *Server) DeleteAllHandler() httprouter.Handle {
 		// Delete user's primary feed
 		if err := s.db.DelFeed(ctx.User.Username); err != nil {
 			ctx.Error = true
-			ctx.Message = "An error occured whilst deleting your account"
+			ctx.Message = s.tr(ctx, "ErrorDeletingAccount")
 			s.render("error", w, ctx)
 			return
 		}
@@ -2268,7 +2268,7 @@ func (s *Server) DeleteAllHandler() httprouter.Handle {
 			if err := os.Remove(fn); err != nil {
 				log.WithError(err).Error("error removing user's feed")
 				ctx.Error = true
-				ctx.Message = "An error occured whilst deleting your account"
+				ctx.Message = s.tr(ctx, "ErrorDeletingAccount")
 				s.render("error", w, ctx)
 			}
 		}
@@ -2276,7 +2276,7 @@ func (s *Server) DeleteAllHandler() httprouter.Handle {
 		// Delete user
 		if err := s.db.DelUser(ctx.Username); err != nil {
 			ctx.Error = true
-			ctx.Message = "An error occured whilst deleting your account"
+			ctx.Message = s.tr(ctx, "ErrorDeletingAccount")
 			s.render("error", w, ctx)
 			return
 		}
@@ -2291,7 +2291,7 @@ func (s *Server) DeleteAllHandler() httprouter.Handle {
 		ctx.Authenticated = false
 
 		ctx.Error = false
-		ctx.Message = "Successfully deleted account"
+		ctx.Message = s.tr(ctx, "MsgDeleteAccountSuccess")
 		s.render("error", w, ctx)
 	}
 }
@@ -2304,7 +2304,7 @@ func (s *Server) DeleteAccountHandler() httprouter.Handle {
 		feeds, err := s.db.GetAllFeeds()
 		if err != nil {
 			ctx.Error = true
-			ctx.Message = "An error occurred while loading feeds"
+			ctx.Message = s.tr(ctx, "ErrorLoadingFeeds")
 			s.render("error", w, ctx)
 			return
 		}

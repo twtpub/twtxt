@@ -166,6 +166,26 @@ other = "由 <a href='https://github.com/prologic' target='_blank'>James Mills</
 hash = "sha1-f585553bb01b2326a11e091a6e07c6426d8c5c35"
 other = "你在想什麼？\n您的見地非常重要！\n今天是個好日子! 有什麼新鮮事兒？\n今天有什麼有趣的事，馬上與大家分享！ \n嗨！👋 朋友，別忘了發推文哦！"
 
+[DeleteAccountFormConfirm]
+hash = "sha1-30b058bb7a1cbd2ae222ec6e0d00e22bcaaadac5"
+other = "您確定要刪除賬號及所有內容？此操作無法恢復！"
+
+[DeleteAccountFormDeleteAll]
+hash = "sha1-97f32d67c7021a7b7f009703c3db00d6bcb78fab"
+other = "全部刪除"
+
+[DeleteAccountNoFeedsSummary]
+hash = "sha1-f7e7f28bf453358e2163d12e530797c71c96d4df"
+other = "您沒有任何 Feeds。"
+
+[DeleteAccountSummary]
+hash = "sha1-fc2d82acff9d38666535ec7528e90dc904cb659b"
+other = "您的賬號將被永久刪除！"
+
+[DeleteAccountTitle]
+hash = "sha1-ee1b9a9f2347505649f78cec43af6e1e86231474"
+other = "刪除賬號"
+
 [ErrorArchivingFeed]
 hash = "sha1-265e11d3ae2f17ae0711f20540f860031e2fcc96"
 other = "Feed 歸檔出錯"
@@ -177,6 +197,10 @@ other = "創建 Feed 錯誤：{{.Error}}"
 [ErrorDeleteLastTwt]
 hash = "sha1-cd9626a561e932d586d048805638b6137b3aa683"
 other = "刪除推文出錯"
+
+[ErrorDeletingAccount]
+hash = "sha1-607cb19c27adf286532be8a09cf7cdbe66406056"
+other = "刪除賬號出錯"
 
 [ErrorDeletingToken]
 hash = "sha1-1af9bbd37b3a74e097e702ce8a78b9525b9a2948"
@@ -213,6 +237,10 @@ other = "無效的 Feed 名稱：{{.Error}}"
 [ErrorInvalidPassword]
 hash = "sha1-52b29810c7c76d469feec362b5c77ccb7531718b"
 other = "密碼無效! 提示: 重新設置密碼?"
+
+[ErrorInvalidToken]
+hash = "sha1-7ac1506119d660dbaca215d74b0768e238ddc6fa"
+other = "無效 Token"
 
 [ErrorInvalidUsername]
 hash = "sha1-c1d07ba7f57bf718dfb346b21773834cc34c7fcd"
@@ -322,6 +350,10 @@ other = "加載數據時發生了錯誤"
 hash = "sha1-7f2f6a15cf8da2b27e5a4af47b58e7ad71c0b3d9"
 other = "錯誤"
 
+[ErrorTokenExpires]
+hash = "sha1-a0682dcb983fc2fb1fc7d119a8fb933c18e0cca0"
+other = "Token 已過期"
+
 [ErrorUnfollowingFeed]
 hash = "sha1-430f3f412e0802c05e45dc4f23d83059d08079e9"
 other = "{{.Nick}}: {{.URL}} 取消跟隨出錯"
@@ -337,6 +369,10 @@ other = "用戶沒有找到"
 [ErrorUserOrFeedNotFound]
 hash = "sha1-6a0c81d17564254c7cc8e59f3c34038911a4ed11"
 other = "用戶 或 Feed 沒有找到"
+
+[ErrorUserRecovery]
+hash = "sha1-4762bb21b3c64efd9e17071f0aca160301597d57"
+other = "錯誤！電子郵件址與註冊時填寫地址不匹配"
 
 [ErrorUsernameExists]
 hash = "sha1-a66924d2fc116739aecea8d10e3ff1fe0570b476"
@@ -630,6 +666,10 @@ other = "Feed 歸檔成功"
 hash = "sha1-6c4ce8b4a48e6461594c84e727c722730f967af1"
 other = "創建 {{.Feed}} 成功！"
 
+[MsgDeleteAccountSuccess]
+hash = "sha1-ccbff76316ef62fbbfc9257e5ca8e6c69401175c"
+other = "賬號刪除成功"
+
 [MsgDeleteTokenSuccess]
 hash = "sha1-065262182c05fd1ffe90891963591d5589fc1581"
 other = "刪除令牌成功"
@@ -641,6 +681,10 @@ other = "{{.Nick}}: {{.URL}} 跟隨成功"
 [MsgMessagesSuccessfullySent]
 hash = "sha1-03a2ed9b9721a9755729b829c7623cfa4a9c0586"
 other = "已成功發送訊息"
+
+[MsgPasswordResetSuccess]
+hash = "sha1-b4fa66ed409a0c041047c893c4359da1bb5ad8b7"
+other = "密碼重置成功"
 
 [MsgTransferFeedSuccess]
 hash = "sha1-562fb7a829c098116e4f3e5eedea209998209fd9"
@@ -657,6 +701,10 @@ other = "更新 Feed 成功"
 [MsgUpdateSettingsSuccess]
 hash = "sha1-2d15d8d21abf06dce5cbabec0cf63139ff64c3da"
 other = "更新設置成功"
+
+[MsgUserRecoveryRequestSent]
+hash = "sha1-a3b2c11ab0b4c328326d2f3e629f52543d4eb230"
+other = "賬號恢復請求已發送！請查收郵件並按說明操作"
 
 [NavDiscover]
 hash = "sha1-4827ea22716a74aaf8bbe499fc314bb93f73c65e"
