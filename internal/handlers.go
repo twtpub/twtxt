@@ -394,7 +394,7 @@ func (s *Server) ArchiveFeedHandler() httprouter.Handle {
 
 		if feedName == "" {
 			ctx.Error = true
-			ctx.Message = "No feed specified"
+			ctx.Message = s.tr(ctx, "ErrorNoFeed")
 			s.render("error", w, ctx)
 			return
 		}
@@ -404,11 +404,11 @@ func (s *Server) ArchiveFeedHandler() httprouter.Handle {
 			log.WithError(err).Errorf("error loading feed object for %s", feedName)
 			ctx.Error = true
 			if err == ErrFeedNotFound {
-				ctx.Message = "Feed not found"
+				ctx.Message = s.tr(ctx, "ErrorFeedNotFound")
 				s.render("404", w, ctx)
 			}
 
-			ctx.Message = "Error loading feed"
+			ctx.Message = s.tr(ctx, "ErrorLoadingFeed")
 			s.render("error", w, ctx)
 			return
 		}
@@ -422,13 +422,13 @@ func (s *Server) ArchiveFeedHandler() httprouter.Handle {
 		if err := DetachFeedFromOwner(s.db, ctx.User, feed); err != nil {
 			log.WithError(err).Warnf("Error detaching feed owner %s from feed %s", ctx.User.Username, feed.Name)
 			ctx.Error = true
-			ctx.Message = "Error archiving feed"
+			ctx.Message = s.tr(ctx, "ErrorArchivingFeed")
 			s.render("error", w, ctx)
 			return
 		}
 
 		ctx.Error = false
-		ctx.Message = "Successfully archived feed"
+		ctx.Message = s.tr(ctx, "MsgArchiveFeedSuccess")
 		s.render("error", w, ctx)
 	}
 }

@@ -166,6 +166,10 @@ other = "由 <a href='https://github.com/prologic' target='_blank'>James Mills</
 hash = "sha1-f585553bb01b2326a11e091a6e07c6426d8c5c35"
 other = "你在想什么？\n您的见地非常重要！\n今天是个好日子! 有什么新鲜事？\n今天有什么有趣的事，马上与大家分享！ \n嗨！👋 朋友，别忘了发推文哦！"
 
+[ErrorArchivingFeed]
+hash = "sha1-265e11d3ae2f17ae0711f20540f860031e2fcc96"
+other = "Feed 归档出错"
+
 [ErrorCreateFeed]
 hash = "sha1-2ccc0dcebeac6bd910e18123fb9cbe852718c866"
 other = "创建 Feed 错误：{{.Error}}"
@@ -209,6 +213,10 @@ other = "密码无效! 提示: 重新设置密码?"
 [ErrorInvalidUsername]
 hash = "sha1-c1d07ba7f57bf718dfb346b21773834cc34c7fcd"
 other = "用户名无效! 提示: 注册一个账号?"
+
+[ErrorLoadingFeed]
+hash = "sha1-488ffebda10d862ebc11d543467ff05e84a532cb"
+other = "加载 Feed 出错"
 
 [ErrorLoadingPage]
 hash = "sha1-be333bf165f0958ae075b50b9f978e75bd63f940"
@@ -569,6 +577,10 @@ other = "您收到的私信列表"
 [MessagesTitle]
 hash = "sha1-e5204fc48e8ac1f01ba1f391a69aa88ba367d672"
 other = "私信"
+
+[MsgArchiveFeedSuccess]
+hash = "sha1-64e4e8ba0cb0e8f74058e0ef263a173df2d2b2cb"
+other = "Feed 归档成功"
 
 [MsgCreateFeedSuccess]
 hash = "sha1-6c4ce8b4a48e6461594c84e727c722730f967af1"
