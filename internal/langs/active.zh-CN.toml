@@ -230,6 +230,10 @@ other = "加载用户配置出错"
 hash = "sha1-aab0d6f0ea631fdcbe5ec82b50b086ae23c5c82a"
 other = "加载动态时发生了错误"
 
+[ErrorLoadingTwtFromArchive]
+hash = "sha1-166cf1c04231010e14b7b9c23807ea51e6eda339"
+other = "从存档中加载推文出错，请重试"
+
 [ErrorMaxFailedLogins]
 hash = "sha1-dbebd52a4449b3d284699bd8f79dc7d55699e754"
 other = "太多次登录失败. 账号临时锁定, 请稍候重试."
@@ -245,6 +249,10 @@ other = "没有 Feed 指定"
 [ErrorNoFeedByNick]
 hash = "sha1-de30a4714a243dc78cfe242419ba447532603673"
 other = "没有找到 {{.Nick}} 的 Feed"
+
+[ErrorNoMatchingTwt]
+hash = "sha1-526a0a4c76372ff65d69af750d50c42d1ba6a9fa"
+other = "没有找到匹配的推文"
 
 [ErrorNoNick]
 hash = "sha1-2e0398c6377124d05a7fcb0a83bc2973692aa17c"

@@ -1,3 +1,7 @@
-[MsgArchiveFeedSuccess]
-hash = "sha1-64e4e8ba0cb0e8f74058e0ef263a173df2d2b2cb"
-other = "Feed 歸檔成功"
+[ErrorLoadingTwtFromArchive]
+hash = "sha1-166cf1c04231010e14b7b9c23807ea51e6eda339"
+other = "從存檔中加載推文出錯，請重試"
+
+[ErrorNoMatchingTwt]
+hash = "sha1-526a0a4c76372ff65d69af750d50c42d1ba6a9fa"
+other = "沒有找到匹配的推文"

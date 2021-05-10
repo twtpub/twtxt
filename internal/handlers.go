@@ -614,7 +614,7 @@ func (s *Server) PostHandler() httprouter.Handle {
 		if hash != "" && lastTwt.Hash() == hash {
 			if err := DeleteLastTwt(s.config, ctx.User); err != nil {
 				ctx.Error = true
-				ctx.Message = "Error deleting last twt"
+				ctx.Message = s.tr(ctx, "ErrorDeleteLastTwt")
 				s.render("error", w, ctx)
 			}
 		} else {
@@ -797,7 +797,7 @@ func (s *Server) PermalinkHandler() httprouter.Handle {
 				twt, err = s.archive.Get(hash)
 				if err != nil {
 					ctx.Error = true
-					ctx.Message = "Error loading twt from archive, please try again"
+					ctx.Message = s.tr(ctx, "ErrorLoadingTwtFromArchive")
 					s.render("error", w, ctx)
 					return
 				}
@@ -806,7 +806,7 @@ func (s *Server) PermalinkHandler() httprouter.Handle {
 
 		if twt.IsZero() {
 			ctx.Error = true
-			ctx.Message = "No matching twt found!"
+			ctx.Message = s.tr(ctx, "ErrorNoMatchingTwt")
 			s.render("404", w, ctx)
 			return
 		}
