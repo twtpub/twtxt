@@ -586,7 +586,7 @@ func (s *Server) PostHandler() httprouter.Handle {
 		if r.Method == http.MethodDelete || r.Method == http.MethodPatch {
 			if err := DeleteLastTwt(s.config, ctx.User); err != nil {
 				ctx.Error = true
-				ctx.Message = "Error deleting last twt"
+				ctx.Message = s.tr(ctx, "ErrorDeleteLastTwt")
 				s.render("error", w, ctx)
 			}
 
@@ -606,7 +606,7 @@ func (s *Server) PostHandler() httprouter.Handle {
 		// log.Debugf("form.hash=%v,lastTwt.hash=%v", hash, lastTwt.Hash())
 		if err != nil {
 			ctx.Error = true
-			ctx.Message = "Error deleting last twt"
+			ctx.Message = s.tr(ctx, "ErrorDeleteLastTwt")
 			s.render("error", w, ctx)
 			return
 		}
@@ -625,7 +625,7 @@ func (s *Server) PostHandler() httprouter.Handle {
 
 		if text == "" {
 			ctx.Error = true
-			ctx.Message = "No post content provided!"
+			ctx.Message = s.tr(ctx, "ErrorNoPostContent")
 			s.render("error", w, ctx)
 			return
 		}
@@ -643,7 +643,7 @@ func (s *Server) PostHandler() httprouter.Handle {
 		if err != nil {
 			log.WithError(err).Errorf("error loading user object for %s", ctx.Username)
 			ctx.Error = true
-			ctx.Message = "Error posting twt"
+			ctx.Message = s.tr(ctx, "ErrorPostingTwt")
 			s.render("error", w, ctx)
 			return
 		}
@@ -672,7 +672,7 @@ func (s *Server) PostHandler() httprouter.Handle {
 		if err != nil {
 			log.WithError(err).Error("error posting twt")
 			ctx.Error = true
-			ctx.Message = "Error posting twt"
+			ctx.Message = s.tr(ctx, "ErrorPostingTwt")
 			s.render("error", w, ctx)
 			return
 		}

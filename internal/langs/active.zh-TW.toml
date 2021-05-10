@@ -170,6 +170,10 @@ other = "你在想什麼？\n您的見地非常重要！\n今天是個好日子!
 hash = "sha1-2ccc0dcebeac6bd910e18123fb9cbe852718c866"
 other = "創建 Feed 錯誤：{{.Error}}"
 
+[ErrorDeleteLastTwt]
+hash = "sha1-cd9626a561e932d586d048805638b6137b3aa683"
+other = "刪除推文出錯"
+
 [ErrorFeedNotFound]
 hash = "sha1-d01bdf9ce19f5e183eb2058e4d58a7b5b472f3d4"
 other = "沒有找到 Feed"
@@ -225,6 +229,14 @@ other = "沒有找到 {{.Nick}} 的 Feed"
 [ErrorNoNick]
 hash = "sha1-2e0398c6377124d05a7fcb0a83bc2973692aa17c"
 other = "沒有指定取消跟隨用戶的暱稱"
+
+[ErrorNoPostContent]
+hash = "sha1-dbb586ba4bf044dc51ea2349c24857415e0dfaa9"
+other = "沒有提供內容"
+
+[ErrorPostingTwt]
+hash = "sha1-3335fb1d3ffbc64fc705a63b65a2fee6563c83b1"
+other = "發表推文出錯"
 
 [ErrorRegisterDisabled]
 hash = "sha1-58ae30a9afd39e0111c2d0864b81bb12b799820e"

@@ -1,15 +1,7 @@
-[ErrorNoFeedByNick]
-hash = "sha1-de30a4714a243dc78cfe242419ba447532603673"
-other = "沒有找到 {{.Nick}} 的 Feed"
+[ErrorNoPostContent]
+hash = "sha1-dbb586ba4bf044dc51ea2349c24857415e0dfaa9"
+other = "沒有提供內容"
 
-[ErrorNoNick]
-hash = "sha1-2e0398c6377124d05a7fcb0a83bc2973692aa17c"
-other = "沒有指定取消跟隨用戶的暱稱"
-
-[ErrorUnfollowingFeed]
-hash = "sha1-430f3f412e0802c05e45dc4f23d83059d08079e9"
-other = "{{.Nick}}: {{.URL}} 取消跟隨出錯"
-
-[MsgUnfollowSuccess]
-hash = "sha1-afaf49fe9f7ccb11463b3d5beebe99bca5759402"
-other = "{{.Nick}}: {{.URL}} 取消跟隨成功"
+[ErrorPostingTwt]
+hash = "sha1-3335fb1d3ffbc64fc705a63b65a2fee6563c83b1"
+other = "發表推文出錯"
