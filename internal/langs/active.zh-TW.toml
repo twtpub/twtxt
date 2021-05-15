@@ -199,7 +199,7 @@ hash = "sha1-cd9626a561e932d586d048805638b6137b3aa683"
 other = "刪除推文出錯"
 
 [ErrorDeletingAccount]
-hash = "sha1-607cb19c27adf286532be8a09cf7cdbe66406056"
+hash = "sha1-7281529051bbb2b1c2c140a1a023da8975659444"
 other = "刪除賬號出錯"
 
 [ErrorDeletingToken]

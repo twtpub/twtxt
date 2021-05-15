@@ -1,19 +1,3 @@
-[DeleteAccountFormConfirm]
-hash = "sha1-30b058bb7a1cbd2ae222ec6e0d00e22bcaaadac5"
-other = "您確定要刪除賬號及所有內容？此操作無法恢復！"
-
-[DeleteAccountFormDeleteAll]
-hash = "sha1-97f32d67c7021a7b7f009703c3db00d6bcb78fab"
-other = "全部刪除"
-
-[DeleteAccountNoFeedsSummary]
-hash = "sha1-f7e7f28bf453358e2163d12e530797c71c96d4df"
-other = "您沒有任何 Feeds。"
-
-[DeleteAccountSummary]
-hash = "sha1-fc2d82acff9d38666535ec7528e90dc904cb659b"
-other = "您的賬號將被永久刪除！"
-
-[DeleteAccountTitle]
-hash = "sha1-ee1b9a9f2347505649f78cec43af6e1e86231474"
-other = "刪除賬號"
+[ErrorDeletingAccount]
+hash = "sha1-7281529051bbb2b1c2c140a1a023da8975659444"
+other = "刪除賬號出錯"
